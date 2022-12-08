@@ -1,4 +1,4 @@
-package com.project.heypharma
+package com.saclim.heypharmaapp
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.project.heypharma
+package com.saclim.heypharmaapp
 
 import android.content.Intent
 import android.os.Bundle
