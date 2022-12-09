@@ -6,18 +6,14 @@ import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.ButtonBarLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,11 +23,10 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.tbuonomo.viewpagerdotsindicator.setBackgroundCompat
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_scan_here.*
 import kotlinx.android.synthetic.main.activity_scan_here.bottomNavigationView
-import java.util.jar.Manifest
+import java.lang.System.lineSeparator
 
 
 class ScanHere : AppCompatActivity() {
@@ -130,7 +125,8 @@ class ScanHere : AppCompatActivity() {
                     progressDialog.dismiss()
 
                     val recognizedText = text.text
-
+                    /*val lines: List<String> = recognizedText.split(".")
+                    Toast.makeText(this,lines.size,Toast.LENGTH_LONG).show()*/
                     Toast.makeText(this,recognizedText,Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener{ e->
