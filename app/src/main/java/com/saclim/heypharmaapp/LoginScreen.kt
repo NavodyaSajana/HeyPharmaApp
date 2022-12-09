@@ -56,6 +56,8 @@ class LoginScreen : AppCompatActivity() {
                         if(result.isSuccessful){
                             progressDialog.dismiss()
                             Toast.makeText(this,"Login Success",Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, Dashboard::class.java)
+                            startActivity(intent)
 
                         }else{
                             progressDialog.dismiss()
