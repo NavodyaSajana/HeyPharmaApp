@@ -98,7 +98,7 @@ class RegistrationScreen : AppCompatActivity() {
                     textInputUsernameRg.setHelperText("*Enter Your Email")
                 }else if(pass.isNullOrEmpty()){
                     clearErrorMessages()
-                    textInputPasswordRg.setHelperText("*Enter Valied Password")
+                    textInputPasswordRg.setHelperText("*Enter Valid Password")
                 }else if(comPass.isNullOrEmpty()){
                     clearErrorMessages()
                     textInputRePassword.setHelperText("*Confirm Your Password")

@@ -37,7 +37,7 @@ class LoginScreen : AppCompatActivity() {
         progressDialog.setCanceledOnTouchOutside(false)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        lblLoginRegister.setOnClickListener(){
+        lblLoginRegister.setOnClickListener{
             clearErrorMessages()
             val intent = Intent(this, RegistrationScreen::class.java)
             startActivity(intent)
@@ -56,6 +56,8 @@ class LoginScreen : AppCompatActivity() {
                         if(result.isSuccessful){
                             progressDialog.dismiss()
                             Toast.makeText(this,"Login Success",Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, Dashboard::class.java)
+                            startActivity(intent)
 
                         }else{
                             progressDialog.dismiss()
@@ -66,9 +68,9 @@ class LoginScreen : AppCompatActivity() {
                     clearErrorMessages()
                     progressDialog.dismiss()
                     if(email.isNullOrEmpty()) {
-                        textInputUsername.setHelperText("*Enter Email...")
+                        textInputUsername.helperText = "*Enter Email..."
                     }else if(pass.isNullOrEmpty()) {
-                        textInputPassword.setHelperText("*Enter Password...")
+                        textInputPassword.helperText = "*Enter Password..."
                     }
                 }
             }catch(e:Exception){
@@ -77,7 +79,7 @@ class LoginScreen : AppCompatActivity() {
         }
     }
     private fun clearErrorMessages(){
-        textInputUsername.setHelperText("")
-        textInputPassword.setHelperText("")
+        textInputUsername.helperText = ""
+        textInputPassword.helperText = ""
     }
 }
