@@ -19,6 +19,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -33,6 +37,8 @@ class ScanHere : AppCompatActivity() {
 
     private lateinit var cameraCaptureImage:ImageView
     private lateinit var fab:FloatingActionButton
+    private lateinit var textMedicationName: TextInputEditText
+
 
     private companion object{
         private const val CAMERA_REQUEST_CODE=100
@@ -48,12 +54,16 @@ class ScanHere : AppCompatActivity() {
 
     private lateinit var textRecognizer: TextRecognizer
 
+    private lateinit var firebaseDatabase:FirebaseDatabase
+    private lateinit var databaseReference: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_here)
 
         fab = findViewById(R.id.fab)
         cameraCaptureImage = findViewById(R.id.CameraCaptureImage )
+        textMedicationName = findViewById(R.id.textMedicationName)
 
         cameraPermission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storagePermission = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -103,10 +113,28 @@ class ScanHere : AppCompatActivity() {
         }
 
         fab.setOnClickListener{
-            if(imageUri!=null){
-                recognizeTextFromImage()
-            }else{
-                Toast.makeText(this,"Pick an Image...",Toast.LENGTH_SHORT).show()
+            progressDialog.setMessage("Searching The Drug...")
+            progressDialog.show()
+            val medicationItem = textMedicationName.text.toString().toUpperCase()
+
+            if(!medicationItem.isNullOrEmpty()){
+                firebaseDatabase = FirebaseDatabase.getInstance()
+                databaseReference = firebaseDatabase.getReference("Drug")
+
+                databaseReference.child(medicationItem).get().addOnSuccessListener { result->
+                    progressDialog.dismiss()
+                    if(result.value!=null){
+                        val intent= Intent(this, ScanDetails::class.java)
+                        intent.putExtra("medicationName",medicationItem)
+                        finish()
+                        startActivity(intent)
+                    }else{
+                        showToast("Sorry This Drug is Not Available")
+                    }
+                }.addOnFailureListener {
+                    progressDialog.dismiss()
+                    showToast(it.toString())
+                }
             }
         }
 
@@ -125,9 +153,8 @@ class ScanHere : AppCompatActivity() {
                     progressDialog.dismiss()
 
                     val recognizedText = text.text
-                    /*val lines: List<String> = recognizedText.split(".")
-                    Toast.makeText(this,lines.size,Toast.LENGTH_LONG).show()*/
-                    Toast.makeText(this,recognizedText,Toast.LENGTH_LONG).show()
+                    textMedicationName.setText(recognizedText.toString())
+                    Toast.makeText(this,textMedicationName.text.toString(),Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener{ e->
                     progressDialog.dismiss()
@@ -185,6 +212,11 @@ class ScanHere : AppCompatActivity() {
                 imageUri = data!!.data
 
                 cameraCaptureImage.setImageURI(imageUri)
+                if(imageUri!=null){
+                    recognizeTextFromImage()
+                }else{
+                    Toast.makeText(this,"Pick an Image...",Toast.LENGTH_SHORT).show()
+                }
             }
             else{
                 showToast("Cancelled...!")

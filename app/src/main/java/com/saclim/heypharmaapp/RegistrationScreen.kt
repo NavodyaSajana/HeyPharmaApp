@@ -125,6 +125,7 @@ class RegistrationScreen : AppCompatActivity() {
 
                             progressDialog.setMessage("Creating Account...")
                             progressDialog.show()
+                            //val uid = firebaseAuth.uid
                             firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener{result->
                                 if(result.isSuccessful){
                                     progressDialog.dismiss()
