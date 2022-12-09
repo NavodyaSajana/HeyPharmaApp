@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="Welcome Back Disha "
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/appname"
                 app:layout_constraintTop_toBottomOf="@+id/appname" />
 
