@@ -105,12 +105,66 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="200dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/medImg"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+
+                android:layout_marginStart="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints"
+                android:src="@drawable/profile3"/>
+
+            <TextView
+                android:id="@+id/txtMedication"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Medication"
+                android:textSize="25dp"
+                app:layout_constraintLeft_toRightOf="@id/medImg"
+                tools:ignore="MissingConstraints"
+                android:layout_marginStart="20dp"/>
+            <TextView
+                android:id="@+id/txtDiciese"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Diciese"
+                android:textSize="20dp"
+                app:layout_constraintLeft_toRightOf="@id/medImg"
+                app:layout_constraintTop_toBottomOf="@id/txtMedication"
+                tools:ignore="MissingConstraints"
+                android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:id="@+id/txtMedDescription"
+                android:layout_width="match_parent"
+                android:height="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="20dp"
+                android:text=" Description "
+                android:textSize="20dp"
+                android:background="@drawable/textview_border"
+                app:layout_constraintTop_toBottomOf="@+id/medImg"
+                tools:ignore="MissingConstraints"
+                android:layout_marginStart="20dp"
+                />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ScanDetailsRecycle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtMedDescription"
                 tools:ignore="MissingConstraints">
 
             </androidx.recyclerview.widget.RecyclerView>

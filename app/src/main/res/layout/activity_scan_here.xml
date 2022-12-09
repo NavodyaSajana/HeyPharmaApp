@@ -111,11 +111,10 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cameraCard"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="200dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="32dp"
-                android:clickable="true"
                 app:cardBackgroundColor="@color/bluegreen"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
@@ -158,6 +157,46 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cameraCard"
                 tools:ignore="MissingConstraints" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nextWarningmsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="32dp"
+                android:text="Select only one medecine* "
+                android:textColor="@color/red"
+                android:textSize="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnScanHere"
+                tools:ignore="MissingConstraints" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputMedicine"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Medicine name"
+                app:boxStrokeColor="@color/bluegreen"
+                app:helperTextTextColor="@color/red"
+                app:hintTextColor="@color/lightblue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nextWarningmsg">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/loginUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
