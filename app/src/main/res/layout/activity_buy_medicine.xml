@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/topprofilebar"
     android:orientation="vertical"
-    tools:context=".ScanHere"
+    tools:context=".BuyMedicine"
     android:background="@color/white">
 
 
@@ -83,14 +83,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/ScanHere"
+        android:id="@+id/BuyMed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:text="SCAN HERE "
+        android:layout_marginBottom="10dp"
+        android:text="BUY MEDICINE "
         android:textColor="@color/bluegreen"
         android:textSize="24dp"
         android:textStyle="bold"
@@ -105,7 +105,53 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="200dp">
+
+
+            <TextView
+                android:id="@+id/selectPharmacyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/textview_border"
+                android:text=" Select Pharmacy "
+                android:textSize="20dp"
+                tools:ignore="MissingConstraints" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/MyPrescriptionRecycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectPharmacyText"
+                tools:ignore="MissingConstraints"
+                tools:listitem="@layout/select_pharmacy_recycler_item">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+            <TextView
+                android:id="@+id/attachPrescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/textview_border"
+                app:layout_constraintTop_toBottomOf="@+id/MyPrescriptionRecycle"
+                android:text=" Attach Prescription "
+                android:textSize="20dp"
+                tools:ignore="MissingConstraints" />
 
 
             <com.google.android.material.card.MaterialCardView
@@ -113,14 +159,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="32dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
+                app:layout_constraintTop_toBottomOf="@id/attachPrescriptionText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints">
 
 
@@ -144,7 +190,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnScanHere"
+                android:id="@+id/btnSelectPreCapture"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,43 +205,26 @@
                 app:layout_constraintTop_toBottomOf="@id/cameraCard"
                 tools:ignore="MissingConstraints" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/nextWarningmsg"
+
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMyPrescriptionGrtQuote"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="32dp"
-                android:text="*Select Only 1 Medication From Below Box"
-                android:textColor="@color/red"
-                android:textSize="12dp"
+                android:backgroundTint="@color/bluegreen"
+                android:text="Get Quote"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnScanHere"
+                app:layout_constraintTop_toBottomOf="@+id/btnSelectPreCapture"
+
                 tools:ignore="MissingConstraints" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputMedicine"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="32dp"
-                android:hint="Medicine name"
-                app:boxStrokeColor="@color/bluegreen"
-                app:helperTextTextColor="@color/red"
-                app:hintTextColor="@color/lightblue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nextWarningmsg">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textMedicationName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -221,7 +250,7 @@
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavigationView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:background="@android:color/transparent"
                 app:menu="@menu/bottom_nav_menu" />

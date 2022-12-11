@@ -8,7 +8,7 @@
     android:id="@+id/topprofilebar"
     android:orientation="vertical"
     tools:context=".Profile"
-    android:background="@color/lightblue">
+    android:background="@color/white">
 
 
 
@@ -31,7 +31,7 @@
                 android:id="@+id/myToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/bluegreen"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
     <ScrollView
 
         android:layout_width="fill_parent"
-        android:layout_height="400dp">
+        android:layout_height="380dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -109,155 +109,18 @@
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/Scan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Scan"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/Prescrip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/Profile"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
-                tools:ignore="MissingConstraints,NotSibling">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Prescription"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/Pharmacy"
+                android:id="@+id/UsernameAndPictureView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Scan"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
-                tools:ignore="MissingConstraints">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Pharmacy"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/SearchDrugs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Pharmacy"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="DuplicateIds,MissingConstraints">
 
                 <LinearLayout
@@ -265,26 +128,210 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image_update"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:src="@drawable/profile3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/textProfileUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Search Drugs"
-                        android:textAlignment="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:text="Disha"
                         android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/darkgray"
+                        android:textSize="32dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ProfileDetailsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/UsernameAndPictureView"
+                tools:ignore="MissingConstraints">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/userDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:text="User Details"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="@color/darkgray" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputProfileName"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Name"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userDetails">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputProfileDob"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Birthdate"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputProfileName">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputProfileDob"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputProfileTp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Telephone"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputProfileDob">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputProfileTp"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputProfileAddress"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Address"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputProfileTp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputProfileAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputProfileEmail"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Email"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputProfileAddress">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputProfileEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputAddressLine1Tp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="15dp"
+                        android:hint="Telephone"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputProvince">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputTp"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProfileUpdate"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="@color/bluegreen"
+                android:text="UPDATE"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ProfileDetailsCard"
+                tools:ignore="MissingConstraints" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

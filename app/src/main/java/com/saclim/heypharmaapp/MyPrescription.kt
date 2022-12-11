@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
+import kotlinx.android.synthetic.main.activity_my_prescription.*
 
-class Dashboard : AppCompatActivity() {
+class MyPrescription : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        setContentView(R.layout.activity_my_prescription)
+
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
@@ -43,23 +46,12 @@ class Dashboard : AppCompatActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        FindMed.setOnClickListener(){
-            val intent= Intent(this, ScanHere::class.java)
+
+        buyText.setOnClickListener(){
+            val intent= Intent(this, BuyMedicine::class.java)
             finish()
             startActivity(intent)
 
         }
-
-        MyPrescriptions.setOnClickListener(){
-            val intent= Intent(this, MyPrescription::class.java)
-            finish()
-            startActivity(intent)
-
-        }
-
     }
-
-
-
-
 }

@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/PharmacViewCard"
+            android:id="@+id/SelectPharmacyViewCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -34,7 +34,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imgPharmacy"
+                    android:id="@+id/imgSelectPharmacy"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"
@@ -53,29 +53,33 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/txtRePharmaName"
+                        android:id="@+id/txtReSelectPhaName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Pharmacy"
+                        android:text="Pharmacy Name"
                         android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textColor="@color/darkgray" />
 
                     <TextView
-                        android:id="@+id/txtRePharmaTP"
+                        android:id="@+id/txtReSelectPhaTp"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="Telephone" />
 
                     <TextView
-                        android:id="@+id/txtRePharmaLocation"
+                        android:id="@+id/txtReSelectPhaLocation"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="TextView" />
+                        android:text="Location"
+                        android:layout_marginBottom="8dp"/>
+
+
+
+
+
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

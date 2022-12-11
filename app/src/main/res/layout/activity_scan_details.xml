@@ -8,7 +8,7 @@
     android:id="@+id/topprofilebar"
     android:orientation="vertical"
     tools:context=".ScanDetails"
-    android:background="@color/lightblue">
+    android:background="@color/white">
 
 
 
@@ -31,7 +31,7 @@
                 android:id="@+id/myToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/bluegreen"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
     <ScrollView
 
         android:layout_width="fill_parent"
-        android:layout_height="484dp">
+        android:layout_height="380dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -143,11 +143,11 @@
                 android:id="@+id/txtMedDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="32dp"
-                android:height="100dp"
+                android:gravity="center_horizontal"
                 android:background="@drawable/textview_border"
                 android:text=" Description "
                 android:textSize="20dp"
@@ -157,11 +157,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ScanDetailsRecycle"
-                android:layout_width="317dp"
-                android:layout_height="134dp"
-                android:layout_marginStart="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtMedDescription"
@@ -209,7 +209,7 @@
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavigationView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:background="@android:color/transparent"
                 app:menu="@menu/bottom_nav_menu" />
@@ -220,7 +220,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            android:src="@drawable/ic_add"
             app:layout_anchor="@id/bottomAppBar"
             android:backgroundTint="@color/bluegreen"/>
 

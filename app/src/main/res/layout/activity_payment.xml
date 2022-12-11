@@ -8,7 +8,7 @@
     android:id="@+id/topprofilebar"
     android:orientation="vertical"
     tools:context=".Payment"
-    android:background="@color/lightblue">
+    android:background="@color/white">
 
 
 
@@ -31,7 +31,7 @@
                 android:id="@+id/myToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/bluegreen"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="24dp"
         android:text="PAYMENT "
         android:textColor="@color/bluegreen"
         android:textSize="24dp"
@@ -101,146 +101,190 @@
     <ScrollView
 
         android:layout_width="fill_parent"
-        android:layout_height="400dp">
+        android:layout_height="380dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/Scan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Scan"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/Prescrip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
-                tools:ignore="MissingConstraints">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Prescription"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/Pharmacy"
+                android:id="@+id/ShippingDetailsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="32dp"
                 android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Scan"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/shippingDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
-                        android:text="Pharmacy"
+                        android:text="Shipping Details"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/darkgray" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputName"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Full Name"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:helperText="Required"
+                        app:helperTextTextColor="@color/red"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/shippingDetails">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputName"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputAddressLine1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Address Line 1"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:helperText="Required"
+                        app:helperTextTextColor="@color/red"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputName">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputAddressLine1"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputAddressLine2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Address Line 2"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:helperText="Required"
+                        app:helperTextTextColor="@color/red"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputAddressLine1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputAddressLine2"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputCity"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="City"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:helperText="Required"
+                        app:helperTextTextColor="@color/red"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputAddressLine2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputProvince"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="Province"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:helperText="Required"
+                        app:helperTextTextColor="@color/red"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputCity">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputProvince"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/InputAddressLine1Tp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="15dp"
+                        android:hint="Telephone"
+                        app:boxStrokeColor="@color/lightblue"
+                        app:helperText="Required"
+                        app:helperTextTextColor="@color/red"
+                        app:hintTextColor="@color/lightblue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/InputProvince">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputTp"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/SearchDrugs"
+                android:id="@+id/PaymentDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -248,40 +292,50 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
                 android:clickable="true"
-                app:cardBackgroundColor="@color/bluegreen"
+                app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Pharmacy"
-                app:strokeColor="@color/lightblue"
-                app:strokeWidth="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/ShippingDetailsCard"
+
                 tools:ignore="DuplicateIds,MissingConstraints">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="20dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/ic_baseline_home_24" />
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/PaymetType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
-                        android:text="Search Drugs"
+                        android:text="Payment Type"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/darkgray" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioInputCod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:text="Cash on Delivery"
+                        android:layout_marginTop="15dp"
+                        android:textSize="16dp"/>
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/radioInputEzCash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:text="EZ Cash"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:textSize="16dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
