@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.saclim.heypharmaapp.R
@@ -19,22 +20,26 @@ class LoginScreen : AppCompatActivity() {
     private lateinit var loginUsername:TextInputEditText
     private lateinit var loginPassword:TextInputEditText
 
-    private lateinit var progressDialog:ProgressDialog
+    private lateinit var loadingDialog:SweetAlertDialog
+    private lateinit var errorDialog: SweetAlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.screen_login)
 
+        loadingDialog = SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
+        loadingDialog.setTitleText("Please Wait...!")
+        loadingDialog.setCancelable(false)
+
+        /*errorDialog = SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+        errorDialog.setCancelable(true)
+        errorDialog.setTitleText("Error...!")*/
 
 
         loginUsername = findViewById(R.id.loginUsername)
         loginPassword = findViewById(R.id.loginPassword)
 
         clearErrorMessages()
-
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Please Wait")
-        progressDialog.setCanceledOnTouchOutside(false)
 
         firebaseAuth = FirebaseAuth.getInstance()
         lblLoginRegister.setOnClickListener{
@@ -50,23 +55,23 @@ class LoginScreen : AppCompatActivity() {
 
                 if(email.isNotEmpty() && pass.isNotEmpty()){
                     clearErrorMessages()
-                    progressDialog.setMessage("Logging...!")
-                    progressDialog.show()
+
+                    loadingDialog.setContentText("Login to the HeyPharma")
+                    loadingDialog.show()
                     firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener { result->
                         if(result.isSuccessful){
-                            progressDialog.dismiss()
-                            Toast.makeText(this,"Login Success",Toast.LENGTH_SHORT).show()
+                            loadingDialog.dismiss()
                             val intent = Intent(this, Dashboard::class.java)
                             startActivity(intent)
 
                         }else{
-                            progressDialog.dismiss()
-                            Toast.makeText(this,result.exception.toString(),Toast.LENGTH_SHORT).show()
+                            loadingDialog.dismiss()
+                            showErrorMessage("Username or Password is wrong")
                         }
                     }
                 }else{
                     clearErrorMessages()
-                    progressDialog.dismiss()
+                    loadingDialog.dismiss()
                     if(email.isNullOrEmpty()) {
                         textInputUsername.helperText = "*Enter Email..."
                     }else if(pass.isNullOrEmpty()) {
@@ -74,12 +79,19 @@ class LoginScreen : AppCompatActivity() {
                     }
                 }
             }catch(e:Exception){
-                Toast.makeText(this,e.message.toString(),Toast.LENGTH_SHORT).show()
+                showErrorMessage("Something went wrong contact technical support")
             }
         }
     }
     private fun clearErrorMessages(){
         textInputUsername.helperText = ""
         textInputPassword.helperText = ""
+    }
+    private fun showErrorMessage(errorText:String){
+        errorDialog = SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+        errorDialog.setCancelable(true)
+        errorDialog.setTitleText("Error...!")
+        errorDialog.setContentText(errorText)
+        errorDialog.show()
     }
 }
