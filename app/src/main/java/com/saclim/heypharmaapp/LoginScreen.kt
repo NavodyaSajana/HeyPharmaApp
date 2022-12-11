@@ -31,11 +31,6 @@ class LoginScreen : AppCompatActivity() {
         loadingDialog.setTitleText("Please Wait...!")
         loadingDialog.setCancelable(false)
 
-        /*errorDialog = SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
-        errorDialog.setCancelable(true)
-        errorDialog.setTitleText("Error...!")*/
-
-
         loginUsername = findViewById(R.id.loginUsername)
         loginPassword = findViewById(R.id.loginPassword)
 

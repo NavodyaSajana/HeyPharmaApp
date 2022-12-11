@@ -4,9 +4,11 @@ import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Message
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -29,7 +31,10 @@ private lateinit var firebaseAuth:FirebaseAuth
 private lateinit var firebaseDatabase:FirebaseDatabase
 private lateinit var databaseReference:DatabaseReference
 
-private lateinit var progressDialog:ProgressDialog
+private lateinit var loadingDialog:SweetAlertDialog
+private lateinit var errorDialog: SweetAlertDialog
+private lateinit var informationDialog: SweetAlertDialog
+
 
 class RegistrationScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +50,6 @@ class RegistrationScreen : AppCompatActivity() {
         registerRePassword=findViewById(R.id.RegisterRePassword)
 
         clearErrorMessages()
-
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Please Wait")
-        progressDialog.setCanceledOnTouchOutside(false)
 
         btnRegCancel.setOnClickListener(){
 
@@ -107,39 +108,26 @@ class RegistrationScreen : AppCompatActivity() {
                     textInputRePassword.setHelperText("*Passwords are mismatching")
                 }
                 else{
-                    progressDialog.setMessage("Registering User...")
-                    progressDialog.show()
+                    showLoadingMessage("Registering New User...")
                     clearErrorMessages()
                     firebaseDatabase = FirebaseDatabase.getInstance()
                     databaseReference = firebaseDatabase.getReference("Member")
+                    val registerMember = Member(name,dob,Integer.parseInt(tp),address,email)
 
-                    val tpNw = Integer.parseInt(registerTp.text.toString())
-
-                    val registerMember = Member(name,dob,tpNw,address,email)
-
-                    databaseReference.child(tpNw.toString()).setValue(registerMember).addOnCompleteListener{result->
+                    firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener{ result->
                         if(result.isSuccessful){
-                            progressDialog.dismiss()
-                            Toast.makeText(this,"User Registered Successfully",Toast.LENGTH_SHORT).show()
-                            progressDialog.dismiss()
-
-                            progressDialog.setMessage("Creating Account...")
-                            progressDialog.show()
-                            //val uid = firebaseAuth.uid
-                            firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener{result->
+                            databaseReference.child(firebaseAuth.currentUser!!.uid.toString()).setValue(registerMember).addOnCompleteListener { result->
                                 if(result.isSuccessful){
-                                    progressDialog.dismiss()
-                                    Toast.makeText(this,"User Added Successfully",Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this,LoginScreen::class.java)
-                                    startActivity(intent)
+                                    loadingDialog.dismissWithAnimation()
+                                    showInformationMessage("User Registered Successfully")
                                 }else{
-                                    progressDialog.dismiss()
-                                    Toast.makeText(this,result.exception.toString(),Toast.LENGTH_SHORT).show()
+                                    loadingDialog.dismissWithAnimation()
+                                    showErrorMessage("Unable to Register User Please Contact Administration")
                                 }
                             }
                         }else{
-                            progressDialog.dismiss()
-                            Toast.makeText(this,result.exception.toString(),Toast.LENGTH_SHORT).show()
+                            loadingDialog.dismissWithAnimation()
+                            showErrorMessage("User Registration Failed Try Again")
                         }
                     }
                 }
@@ -160,4 +148,25 @@ class RegistrationScreen : AppCompatActivity() {
         textInputRePassword.setHelperText("")
     }
 
+    private fun showLoadingMessage(message:String){
+        loadingDialog = SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
+            .setTitleText("Please Wait...")
+            .setContentText("Registering New User")
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
+    }
+
+    private fun showErrorMessage(errorText:String){
+        errorDialog = SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE)
+        errorDialog.setCancelable(true)
+        errorDialog.setTitleText("Error...!")
+        errorDialog.setContentText(errorText)
+        errorDialog.show()
+    }
+    private fun showInformationMessage(inforText:String){
+        informationDialog = SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+        informationDialog.setTitleText("Done...!")
+        informationDialog.setContentText(inforText)
+        informationDialog.show()
+    }
 }
