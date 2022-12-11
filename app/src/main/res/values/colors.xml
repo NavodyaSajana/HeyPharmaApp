@@ -11,5 +11,7 @@
     <color name="lightgray">#D3D3D3</color>
     <color name="red">#FF0000</color>
     <color name="bluegreen">#0D98BA</color>
+    <color name="darkgray">#a9a9a9</color>
+    <color name="green">#90EE90</color>
 
 </resources>
