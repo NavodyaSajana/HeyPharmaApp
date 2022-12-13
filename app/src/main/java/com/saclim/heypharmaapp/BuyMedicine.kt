@@ -130,12 +130,12 @@ class BuyMedicine : AppCompatActivity() {
                 val selectedItem = pharmacyList[position]
                 Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
             }
-            holder.select_pharmacy_recycle_click.setOnClickListener (View.OnClickListener {
+            /*holder.select_pharmacy_recycle_click.setOnClickListener (View.OnClickListener {
                 if(it.callOnClick()){
                     val selectedItem = pharmacyList[position]
                     Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
                 }
-            })
+            })*/
 
 
         }
