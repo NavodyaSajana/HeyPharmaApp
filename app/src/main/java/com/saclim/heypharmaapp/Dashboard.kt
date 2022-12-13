@@ -57,6 +57,12 @@ class Dashboard : AppCompatActivity() {
 
         }
 
+        GetQuote.setOnClickListener{
+            val intent= Intent(this, BuyMedicine::class.java)
+            finish()
+            startActivity(intent)
+        }
+
     }
 
 

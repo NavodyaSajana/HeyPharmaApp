@@ -48,9 +48,9 @@ class MyPrescription : AppCompatActivity() {
 
 
         buyText.setOnClickListener(){
-            val intent= Intent(this, BuyMedicine::class.java)
+            /*val intent= Intent(this, BuyMedicine::class.java)
             finish()
-            startActivity(intent)
+            startActivity(intent)*/
 
         }
     }

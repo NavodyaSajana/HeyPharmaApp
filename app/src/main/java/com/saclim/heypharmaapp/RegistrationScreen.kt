@@ -151,7 +151,7 @@ class RegistrationScreen : AppCompatActivity() {
     private fun showLoadingMessage(message:String){
         loadingDialog = SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
             .setTitleText("Please Wait...")
-            .setContentText("Registering New User")
+            .setContentText(message)
         loadingDialog.setCancelable(false)
         loadingDialog.show()
     }

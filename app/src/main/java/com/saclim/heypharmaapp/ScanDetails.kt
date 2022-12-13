@@ -141,7 +141,6 @@ class ScanDetails : AppCompatActivity() {
                 for(pharmaSnapshot in snapshot.children){
                     val data = pharmaSnapshot.getValue().toString()
                     pharmacyNumbers.add(data)
-                    //makeToast(data)
                 }
                 loadPharmacyDetails(pharmacyNumbers)
                 progressDialog.dismiss()
@@ -209,25 +208,6 @@ class ScanDetails : AppCompatActivity() {
                 .into(holder.imgPharmacy)
             holder.cardView.setOnClickListener{
                 val selectedItem = pharmacyList[position]
-
-
-                /*val confirmDialog = AlertDialog.Builder(applicationContext)
-                confirmDialog.setTitle("Confirm")
-                confirmDialog.setMessage("Are you sure to Contact ${selectedItem.Name.toString()}")
-                confirmDialog.setIcon(android.R.drawable.button_onoff_indicator_on)
-                confirmDialog.setPositiveButton("Yes"){dialogInterface,which->
-                    makeToast(selectedItem.Name.toString())
-                }
-                confirmDialog.setNeutralButton("Cancel"){dialogInterface,which->
-                    makeToast("Cancelled")
-                }
-                confirmDialog.setNegativeButton("No"){dialogInterface,which->
-                    makeToast("Select More...!")
-                }
-
-                val alertDialog:AlertDialog = confirmDialog.create()
-                alertDialog.setCancelable(false)
-                alertDialog.show()*/
             }
         }
 
