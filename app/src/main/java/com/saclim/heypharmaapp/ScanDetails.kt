@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -206,8 +207,9 @@ class ScanDetails : AppCompatActivity() {
                 .load(currentItem.ImagePharmacy)
                 .override(100, 70)
                 .into(holder.imgPharmacy)
-            holder.cardView.setOnClickListener{
+            holder.avb_pharmacy_recycle_item.setOnClickListener {
                 val selectedItem = pharmacyList[position]
+                Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -222,7 +224,7 @@ class ScanDetails : AppCompatActivity() {
         val txtRePharmaLocation:TextView = itemView.findViewById(R.id.txtRePharmaLocation)
         val imgPharmacy:ImageView = itemView.findViewById(R.id.imgPharmacy)
         val cardView : CardView = itemView.findViewById(R.id.main_tab)
-
+        val avb_pharmacy_recycle_item : LinearLayout = itemView.findViewById(R.id.avb_pharmacy_recycle_item)
     }
 
     private fun makeToast(value:String){

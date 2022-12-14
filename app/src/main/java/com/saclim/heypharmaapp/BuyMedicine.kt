@@ -1,46 +1,91 @@
 package com.saclim.heypharmaapp
 
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import org.w3c.dom.Text
+import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
+import kotlinx.android.synthetic.main.activity_scan_here.*
+import kotlinx.android.synthetic.main.select_pharmacy_recycler_item.*
+import kotlinx.android.synthetic.main.select_pharmacy_recycler_item.view.*
+import java.io.ByteArrayOutputStream
+import java.util.*
 
-private lateinit var loadingDialog:SweetAlertDialog
-private lateinit var databaseReference:DatabaseReference
-private lateinit var myPrescriptionRecycle:RecyclerView
-private lateinit var pharmacyList:ArrayList<Pharmacy>
-private lateinit var errorDialog:SweetAlertDialog
 
 class BuyMedicine : AppCompatActivity() {
+    private lateinit var loadingDialog:SweetAlertDialog
+    private lateinit var databaseReference:DatabaseReference
+    private lateinit var myPrescriptionRecycle:RecyclerView
+    private lateinit var pharmacyList:ArrayList<Pharmacy>
+    private lateinit var errorDialog:SweetAlertDialog
+    private lateinit var confirmDialog: SweetAlertDialog
+    private lateinit var successDialog: SweetAlertDialog
+    private lateinit var storageReference:StorageReference
+    private lateinit var firebaseStorage:FirebaseStorage
+    private lateinit var firebaseAuth:FirebaseAuth
+    private lateinit var pharmacyTelephone:String
+
+    private companion object{
+        private const val CAMERA_REQUEST_CODE=100
+        private const val STORAGE_REQUEST_CODE=101
+    }
+
+    private var imageUri: Uri?=null
+
+    private lateinit var cameraPermission:Array<String>
+    private lateinit var storagePermission:Array<String>
+    private lateinit var cameraCaptureImage:ImageView
+    private lateinit var btnSelectPreCapture:MaterialButton
+    private lateinit var btnMyPrescriptionGrtQuote:MaterialButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_medicine)
 
+
+
+
         myPrescriptionRecycle = findViewById(R.id.MyPrescriptionRecycle)
+        cameraCaptureImage = findViewById(R.id.CameraCaptureImage)
+        btnSelectPreCapture = findViewById(R.id.btnSelectPreCapture)
+        btnMyPrescriptionGrtQuote = findViewById(R.id.btnMyPrescriptionGrtQuote)
         pharmacyList = arrayListOf<Pharmacy>()
         myPrescriptionRecycle.adapter=pharmacyAdapter()
         myPrescriptionRecycle.layoutManager = LinearLayoutManager(this)
         myPrescriptionRecycle.setHasFixedSize(true)
-
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
 
@@ -75,6 +120,18 @@ class BuyMedicine : AppCompatActivity() {
 
         loadPharmacyDetails()
 
+        btnSelectPreCapture.setOnClickListener {
+            attachPrescription()
+        }
+
+        btnMyPrescriptionGrtQuote.setOnClickListener {
+            if(imageUri!=null && pharmacyTelephone!=""){
+                savePrescriptionData()
+            }else{
+                Toast.makeText(applicationContext,"Image or selection null",Toast.LENGTH_SHORT).show()
+            }
+
+        }
     }
 
     private fun loadPharmacyDetails(){
@@ -117,8 +174,8 @@ class BuyMedicine : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: PharmacyViewHolder, position: Int) {
-
             val currentItem = pharmacyList[position]
+
             holder.txtReSelectPhaName.text=currentItem.Name
             holder.txtReSelectPhaTp.text=currentItem.telephone
             holder.txtReSelectPhaLocation.text=currentItem.Location
@@ -126,18 +183,21 @@ class BuyMedicine : AppCompatActivity() {
                 .load(currentItem.ImagePharmacy)
                 .override(100, 70)
                 .into(holder.imgSelectPharmacy)
-            holder.cardView.setOnClickListener{
+
+            holder.select_pharmacy_recycle_click.setOnClickListener {
                 val selectedItem = pharmacyList[position]
-                Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
+                showConfirmMessage("Are you sure to place order from ${selectedItem.Name}")
+                confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
+                    pharmacyTelephone = selectedItem.telephone.toString()
+                    //Toast.makeText(applicationContext,"true : "+selectedItem.Name,Toast.LENGTH_LONG).show()
+                    confirmDialog.dismissWithAnimation()
+
+                })
+                confirmDialog.setCancelButton("No",SweetAlertDialog.OnSweetClickListener {
+                    Toast.makeText(applicationContext,"Not Selected",Toast.LENGTH_LONG).show()
+                    confirmDialog.dismissWithAnimation()
+                })
             }
-            /*holder.select_pharmacy_recycle_click.setOnClickListener (View.OnClickListener {
-                if(it.callOnClick()){
-                    val selectedItem = pharmacyList[position]
-                    Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
-                }
-            })*/
-
-
         }
 
         override fun getItemCount(): Int {
@@ -151,8 +211,190 @@ class BuyMedicine : AppCompatActivity() {
         val txtReSelectPhaLocation : TextView = itemView.findViewById(R.id.txtReSelectPhaLocation)
         val imgSelectPharmacy : ImageView = itemView.findViewById(R.id.imgSelectPharmacy)
         val cardView : CardView = itemView.findViewById(R.id.main_tab)
-        val select_pharmacy_recycle_click : LinearLayout = findViewById(R.id.select_pharmacy_recycle_click)
+        val select_pharmacy_recycle_click : LinearLayout = itemView.findViewById(R.id.select_pharmacy_recycle_click)
     }
+
+    ////end of load pharmacy
+
+    //// beginning of attach image file
+
+    private fun attachPrescription(){
+        val popupMenu = PopupMenu(this,btnSelectPreCapture)
+
+        popupMenu.menu.add(Menu.NONE,1,1,"CAMERA")
+        popupMenu.menu.add(Menu.NONE,2,2,"GALLERY")
+
+        popupMenu.show()
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+
+            val id = menuItem.itemId
+            if(id==1){
+                if(checkCameraPermission()){
+                    pickImageCamera()
+                }
+                else{
+                    requstCameraPermission()
+                }
+            }
+            else if(id==2){
+                if(checkStoragePermission()){
+                    pickImageGallery()
+                }
+                else{
+                    requestStoragePermission()
+                }
+            }
+
+            return@setOnMenuItemClickListener true
+        }
+    }
+
+    private fun pickImageGallery(){
+        val intent = Intent(Intent.ACTION_PICK)
+
+        intent.type = "image/*"
+        galleryActivityResultLauncher.launch(intent)
+    }
+
+    private val galleryActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+            if(result.resultCode == Activity.RESULT_OK){
+                val data = result.data
+                imageUri = data!!.data
+                if(imageUri!=null){
+                    //cameraCaptureImage.setImageURI(imageUri)
+                    Glide.with(applicationContext)
+                        .load(imageUri)
+                        .into(cameraCaptureImage)
+                    //recognizeTextFromImage()
+                }else{
+                    Toast.makeText(this,"Pick an Image...",Toast.LENGTH_SHORT).show()
+                }
+            }
+            else{
+                Toast.makeText(this,"Operation Canceled...",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private fun pickImageCamera(){
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE,"Prescription")
+        values.put(MediaStore.Images.Media.DESCRIPTION,"Hey Pharma Prescription Image")
+
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri)
+        cameraActivityResultLauncher.launch(intent)
+    }
+
+    private val cameraActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            if(result.resultCode == Activity.RESULT_OK){
+                Glide.with(applicationContext)
+                    .load(imageUri)
+                    .into(cameraCaptureImage)
+            }
+            else{
+                Toast.makeText(this,"Operation Canceled...",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private fun checkStoragePermission() : Boolean{
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun checkCameraPermission() : Boolean{
+        val cameraResult = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        val storageResult = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+        return cameraResult && storageResult
+    }
+
+    private fun requestStoragePermission(){
+        ActivityCompat.requestPermissions(this,storagePermission,
+            com.saclim.heypharmaapp.BuyMedicine.STORAGE_REQUEST_CODE
+        )
+
+    }
+
+    private fun requstCameraPermission(){
+        ActivityCompat.requestPermissions(this,cameraPermission,
+            com.saclim.heypharmaapp.BuyMedicine.CAMERA_REQUEST_CODE
+        )
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when(requestCode){
+            com.saclim.heypharmaapp.BuyMedicine.CAMERA_REQUEST_CODE ->{
+                if(grantResults.isNotEmpty()){
+                    val cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    val storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
+
+                    if(cameraAccepted && storageAccepted){
+                        pickImageCamera()
+                    }else{
+                        showErrorMessage("Camera & Storage Permission are Required")
+                    }
+                }
+            }
+            com.saclim.heypharmaapp.BuyMedicine.STORAGE_REQUEST_CODE ->{
+                if(grantResults.isNotEmpty()){
+                    val storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+
+                    if(storageAccepted){
+                        pickImageGallery()
+                    }
+                    else{
+                        showErrorMessage("Storage Permission Are Required...!")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun savePrescriptionData(){
+        firebaseAuth = FirebaseAuth.getInstance()
+        databaseReference = FirebaseDatabase.getInstance().getReference("Prescription")
+
+        val member_id:String = firebaseAuth.currentUser!!.uid.toString()
+        val pres_image:String = "prescription/pres-${UUID.randomUUID().toString()}"
+        val phar_id:String = pharmacyTelephone
+
+        showLoadingMessage("Uploading Image...")
+        if(imageUri!=null){
+            firebaseStorage = FirebaseStorage.getInstance()
+            storageReference = firebaseStorage.getReference(pres_image)
+
+            storageReference.putFile(imageUri!!).addOnCompleteListener { result->
+                if(result.isSuccessful){
+                    loadingDialog.dismissWithAnimation()
+                    val presciptionData = Presciption(member_id,pres_image,phar_id)
+                    databaseReference.child(member_id).setValue(presciptionData).addOnCompleteListener { result->
+                        if(result.isSuccessful){
+                            loadingDialog.dismissWithAnimation()
+                            showSuccessMessage("Prescription Saved...")
+                        }else{
+                            loadingDialog.dismissWithAnimation()
+                            showErrorMessage("Something went wrong try again...")
+                        }
+                    }
+                }else{
+                    loadingDialog.dismissWithAnimation()
+                    showErrorMessage("Something went wrong try again : \n Image Not Saved")
+                }
+            }
+        }
+    }
+
     private fun showLoadingMessage(message:String){
         loadingDialog = SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
             .setTitleText("Please Wait...")
@@ -167,4 +409,20 @@ class BuyMedicine : AppCompatActivity() {
         errorDialog.setContentText(errorText)
         errorDialog.show()
     }
+    private fun showConfirmMessage(message:String){
+        confirmDialog = SweetAlertDialog(this,SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+        confirmDialog.setCancelable(true)
+        confirmDialog.setCustomImage(R.drawable.question_mark)
+        confirmDialog.setTitleText("Confirm...!")
+        confirmDialog.setContentText(message)
+        confirmDialog.show()
+    }
+    private fun showSuccessMessage(message:String){
+        successDialog = SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+        successDialog.setCancelable(true)
+        successDialog.setTitleText("Done...!")
+        successDialog.setContentText(message)
+        successDialog.show()
+    }
+
 }
