@@ -57,6 +57,7 @@ class BuyMedicine : AppCompatActivity() {
     private lateinit var firebaseStorage:FirebaseStorage
     private lateinit var firebaseAuth:FirebaseAuth
     private lateinit var pharmacyTelephone:String
+    private lateinit var pharmacyName:String
 
     private companion object{
         private const val CAMERA_REQUEST_CODE=100
@@ -76,8 +77,11 @@ class BuyMedicine : AppCompatActivity() {
         setContentView(R.layout.activity_buy_medicine)
 
 
+        cameraPermission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        storagePermission = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-
+        pharmacyName=""
+        pharmacyTelephone=""
         myPrescriptionRecycle = findViewById(R.id.MyPrescriptionRecycle)
         cameraCaptureImage = findViewById(R.id.CameraCaptureImage)
         btnSelectPreCapture = findViewById(R.id.btnSelectPreCapture)
@@ -126,9 +130,23 @@ class BuyMedicine : AppCompatActivity() {
 
         btnMyPrescriptionGrtQuote.setOnClickListener {
             if(imageUri!=null && pharmacyTelephone!=""){
-                savePrescriptionData()
+                showConfirmMessage("Are you Sure to Place Order On ${pharmacyName}")
+                confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
+                    savePrescriptionData()
+                    confirmDialog.dismissWithAnimation()
+                })
+                confirmDialog.setCancelButton("No",SweetAlertDialog.OnSweetClickListener {
+                    confirmDialog.dismissWithAnimation()
+                    Toast.makeText(this,"Select Again...",Toast.LENGTH_SHORT).show()
+                })
+
             }else{
-                Toast.makeText(applicationContext,"Image or selection null",Toast.LENGTH_SHORT).show()
+                if(imageUri==null){
+                    showErrorMessage("Please attach the prescription...")
+                }
+                else if(pharmacyTelephone==""){
+                    showErrorMessage("Please select the Pharmacy...")
+                }
             }
 
         }
@@ -189,7 +207,7 @@ class BuyMedicine : AppCompatActivity() {
                 showConfirmMessage("Are you sure to place order from ${selectedItem.Name}")
                 confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
                     pharmacyTelephone = selectedItem.telephone.toString()
-                    //Toast.makeText(applicationContext,"true : "+selectedItem.Name,Toast.LENGTH_LONG).show()
+                    pharmacyName = selectedItem.Name.toString()
                     confirmDialog.dismissWithAnimation()
 
                 })
@@ -263,11 +281,9 @@ class BuyMedicine : AppCompatActivity() {
                 val data = result.data
                 imageUri = data!!.data
                 if(imageUri!=null){
-                    //cameraCaptureImage.setImageURI(imageUri)
                     Glide.with(applicationContext)
                         .load(imageUri)
                         .into(cameraCaptureImage)
-                    //recognizeTextFromImage()
                 }else{
                     Toast.makeText(this,"Pick an Image...",Toast.LENGTH_SHORT).show()
                 }
@@ -360,6 +376,18 @@ class BuyMedicine : AppCompatActivity() {
             }
         }
     }
+
+    ////////////////////////////////////////////////////////////
+    //end of selecting prescription/////////////////////////////
+    ////////////////////////////////////////////////////////////
+    /**
+     *
+     *
+     *
+     **/
+    ////////////////////////////////////////////////////////////
+    //beginning of save prescription/////////////////////////////
+    ////////////////////////////////////////////////////////////
 
     private fun savePrescriptionData(){
         firebaseAuth = FirebaseAuth.getInstance()
