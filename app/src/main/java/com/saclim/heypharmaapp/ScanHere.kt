@@ -110,6 +110,7 @@ class ScanHere : AppCompatActivity() {
 
         btnScanHere.setOnClickListener{
             showInputImageDialog()
+
         }
 
         fab.setOnClickListener{
@@ -238,9 +239,12 @@ class ScanHere : AppCompatActivity() {
     private val cameraActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if(result.resultCode == Activity.RESULT_OK){
-
-
                 cameraCaptureImage.setImageURI(imageUri)
+                if(imageUri!=null){
+                    recognizeTextFromImage()
+                }else{
+                    Toast.makeText(this,"Pick an Image...",Toast.LENGTH_SHORT).show()
+                }
             }
             else{
                 showToast("Cancelled...!")

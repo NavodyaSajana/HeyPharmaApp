@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -27,21 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
-import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
-import kotlinx.android.synthetic.main.activity_scan_here.*
-import kotlinx.android.synthetic.main.select_pharmacy_recycler_item.*
-import kotlinx.android.synthetic.main.select_pharmacy_recycler_item.view.*
-import java.io.ByteArrayOutputStream
 import java.util.*
 
 
@@ -58,6 +48,7 @@ class BuyMedicine : AppCompatActivity() {
     private lateinit var firebaseAuth:FirebaseAuth
     private lateinit var pharmacyTelephone:String
     private lateinit var pharmacyName:String
+    private lateinit var whatsAppMessage:String
 
     private companion object{
         private const val CAMERA_REQUEST_CODE=100
@@ -82,6 +73,7 @@ class BuyMedicine : AppCompatActivity() {
 
         pharmacyName=""
         pharmacyTelephone=""
+        whatsAppMessage=""
         myPrescriptionRecycle = findViewById(R.id.MyPrescriptionRecycle)
         cameraCaptureImage = findViewById(R.id.CameraCaptureImage)
         btnSelectPreCapture = findViewById(R.id.btnSelectPreCapture)
@@ -396,8 +388,9 @@ class BuyMedicine : AppCompatActivity() {
         val member_id:String = firebaseAuth.currentUser!!.uid.toString()
         val pres_image:String = "prescription/pres-${UUID.randomUUID().toString()}"
         val phar_id:String = pharmacyTelephone
+        val prescriptionID = UUID.randomUUID().toString()
 
-        showLoadingMessage("Uploading Image...")
+        showLoadingMessage("Saving Prescription Details...")
         if(imageUri!=null){
             firebaseStorage = FirebaseStorage.getInstance()
             storageReference = firebaseStorage.getReference(pres_image)
@@ -405,11 +398,21 @@ class BuyMedicine : AppCompatActivity() {
             storageReference.putFile(imageUri!!).addOnCompleteListener { result->
                 if(result.isSuccessful){
                     loadingDialog.dismissWithAnimation()
-                    val presciptionData = Presciption(member_id,pres_image,phar_id)
-                    databaseReference.child(member_id).setValue(presciptionData).addOnCompleteListener { result->
+
+                    val presciptionData = Presciption(prescriptionID,member_id,pres_image,phar_id,"Pending")
+                    databaseReference.child(prescriptionID).setValue(presciptionData).addOnCompleteListener { result->
                         if(result.isSuccessful){
                             loadingDialog.dismissWithAnimation()
                             showSuccessMessage("Prescription Saved...")
+                            /*showConfirmMessage("Would you like to notify ${pharmacyName} through WhatsApp?")
+                            confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
+                                sendNotification()
+                                confirmDialog.dismissWithAnimation()
+                            })
+                            confirmDialog.setCancelButton("No",SweetAlertDialog.OnSweetClickListener {
+                                confirmDialog.dismissWithAnimation()
+                                //Toast.makeText(this,"Select Again...",Toast.LENGTH_SHORT).show()
+                            })*/
                         }else{
                             loadingDialog.dismissWithAnimation()
                             showErrorMessage("Something went wrong try again...")
@@ -421,6 +424,69 @@ class BuyMedicine : AppCompatActivity() {
                 }
             }
         }
+    }
+    private fun sendNotification(){
+
+        showLoadingMessage("Loading Your Details...")
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("Member").child("${firebaseAuth.currentUser!!.uid}")
+
+        databaseReference.addValueEventListener(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val member = snapshot.getValue(Member::class.java)
+                    whatsAppMessage="Hello I'm ${member!!.name},\nI have send you my prescription I need your assistance ASAP"
+                    whatsAppMessageSend()
+                    loadingDialog.dismissWithAnimation()
+                }else{
+                    loadingDialog.dismissWithAnimation()
+                    showErrorMessage("Your Details are not available...")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                loadingDialog.dismissWithAnimation()
+                showErrorMessage("Data is not available go back and try again")
+            }
+        })
+    }
+    private fun whatsAppMessageSend(){
+        if(whatsAppMessage.isNotEmpty() && pharmacyTelephone.isNotEmpty()){
+            /*if(isWhatappInstalled()){
+                val i = Intent(
+                    Intent.ACTION_VIEW, Uri.parse(
+                        "https://api.whatsapp.com/send?phone=" + pharmacyTelephone.toString() +
+                                "&text=" + whatsAppMessage
+                    )
+                )
+                startActivity(i)
+            }else{
+                showErrorMessage("Please Install WhatsApp")
+            }*/
+            val intent = Intent(Intent.ACTION_SENDTO,Uri.parse("https://api.whatsapp.com/send?phone=+94760566741&text="+ whatsAppMessage))
+            intent.setType("text/plain")
+            intent.setPackage("com.whatsapp")
+            if(intent.resolveActivity(packageManager)==null){
+                showErrorMessage("Please Install WhatsApp")
+            }else{startActivity(intent)}
+
+
+        }else{
+            showErrorMessage("Cannot find the Application Content")
+        }
+    }
+    private fun isWhatappInstalled(): Boolean {
+        val packageManager = packageManager
+        var whatsappInstalled: Boolean
+        try {
+            packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+            whatsappInstalled=true
+        } catch (e: PackageManager.NameNotFoundException) {
+            whatsappInstalled=false
+        }
+
+        return whatsappInstalled
     }
 
     private fun showLoadingMessage(message:String){
