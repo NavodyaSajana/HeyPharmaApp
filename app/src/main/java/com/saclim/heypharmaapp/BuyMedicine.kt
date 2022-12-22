@@ -220,7 +220,6 @@ class BuyMedicine : AppCompatActivity() {
         val txtReSelectPhaTp : TextView = itemView.findViewById(R.id.txtReSelectPhaTp)
         val txtReSelectPhaLocation : TextView = itemView.findViewById(R.id.txtReSelectPhaLocation)
         val imgSelectPharmacy : ImageView = itemView.findViewById(R.id.imgSelectPharmacy)
-        val cardView : CardView = itemView.findViewById(R.id.main_tab)
         val select_pharmacy_recycle_click : LinearLayout = itemView.findViewById(R.id.select_pharmacy_recycle_click)
     }
 
@@ -404,15 +403,6 @@ class BuyMedicine : AppCompatActivity() {
                         if(result.isSuccessful){
                             loadingDialog.dismissWithAnimation()
                             showSuccessMessage("Prescription Saved...")
-                            /*showConfirmMessage("Would you like to notify ${pharmacyName} through WhatsApp?")
-                            confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
-                                sendNotification()
-                                confirmDialog.dismissWithAnimation()
-                            })
-                            confirmDialog.setCancelButton("No",SweetAlertDialog.OnSweetClickListener {
-                                confirmDialog.dismissWithAnimation()
-                                //Toast.makeText(this,"Select Again...",Toast.LENGTH_SHORT).show()
-                            })*/
                         }else{
                             loadingDialog.dismissWithAnimation()
                             showErrorMessage("Something went wrong try again...")
@@ -425,70 +415,6 @@ class BuyMedicine : AppCompatActivity() {
             }
         }
     }
-    private fun sendNotification(){
-
-        showLoadingMessage("Loading Your Details...")
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("Member").child("${firebaseAuth.currentUser!!.uid}")
-
-        databaseReference.addValueEventListener(object : ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    val member = snapshot.getValue(Member::class.java)
-                    whatsAppMessage="Hello I'm ${member!!.name},\nI have send you my prescription I need your assistance ASAP"
-                    whatsAppMessageSend()
-                    loadingDialog.dismissWithAnimation()
-                }else{
-                    loadingDialog.dismissWithAnimation()
-                    showErrorMessage("Your Details are not available...")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                loadingDialog.dismissWithAnimation()
-                showErrorMessage("Data is not available go back and try again")
-            }
-        })
-    }
-    private fun whatsAppMessageSend(){
-        if(whatsAppMessage.isNotEmpty() && pharmacyTelephone.isNotEmpty()){
-            /*if(isWhatappInstalled()){
-                val i = Intent(
-                    Intent.ACTION_VIEW, Uri.parse(
-                        "https://api.whatsapp.com/send?phone=" + pharmacyTelephone.toString() +
-                                "&text=" + whatsAppMessage
-                    )
-                )
-                startActivity(i)
-            }else{
-                showErrorMessage("Please Install WhatsApp")
-            }*/
-            val intent = Intent(Intent.ACTION_SENDTO,Uri.parse("https://api.whatsapp.com/send?phone=+94760566741&text="+ whatsAppMessage))
-            intent.setType("text/plain")
-            intent.setPackage("com.whatsapp")
-            if(intent.resolveActivity(packageManager)==null){
-                showErrorMessage("Please Install WhatsApp")
-            }else{startActivity(intent)}
-
-
-        }else{
-            showErrorMessage("Cannot find the Application Content")
-        }
-    }
-    private fun isWhatappInstalled(): Boolean {
-        val packageManager = packageManager
-        var whatsappInstalled: Boolean
-        try {
-            packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-            whatsappInstalled=true
-        } catch (e: PackageManager.NameNotFoundException) {
-            whatsappInstalled=false
-        }
-
-        return whatsappInstalled
-    }
-
     private fun showLoadingMessage(message:String){
         loadingDialog = SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
             .setTitleText("Please Wait...")

@@ -3,16 +3,28 @@ package com.saclim.heypharmaapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class Dashboard : AppCompatActivity() {
+
+    private lateinit var findMed:CardView
+    private lateinit var myPrescriptions:CardView
+    private lateinit var getQuote:CardView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
+        findMed = findViewById(R.id.FindMed)
+        myPrescriptions = findViewById(R.id.MyPrescriptions)
+        getQuote = findViewById(R.id.GetQuote)
+
         bottomNavigationView.background = null
-        bottomNavigationView.menu.getItem(2).isEnabled = false
+        bottomNavigationView.menu.getItem(0).isChecked=true
+        //bottomNavigationView.menu.getItem(2).isEnabled = false
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -43,21 +55,21 @@ class Dashboard : AppCompatActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        FindMed.setOnClickListener(){
+        findMed.setOnClickListener(){
             val intent= Intent(this, ScanHere::class.java)
             finish()
             startActivity(intent)
 
         }
 
-        MyPrescriptions.setOnClickListener(){
+        myPrescriptions.setOnClickListener(){
             val intent= Intent(this, MyPrescription::class.java)
             finish()
             startActivity(intent)
 
         }
 
-        GetQuote.setOnClickListener{
+        getQuote.setOnClickListener{
             val intent= Intent(this, BuyMedicine::class.java)
             finish()
             startActivity(intent)

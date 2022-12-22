@@ -23,7 +23,7 @@ class Payment : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.Home -> {
-                    val intent= Intent(this,Dashboard::class.java)
+                    val intent= Intent(this, Dashboard::class.java)
                     finish()
                     startActivity(intent)
                     return@OnNavigationItemSelectedListener true
