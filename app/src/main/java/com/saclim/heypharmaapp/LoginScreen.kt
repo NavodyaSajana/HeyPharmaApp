@@ -1,16 +1,12 @@
 package com.saclim.heypharmaapp
 
-import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
-import com.saclim.heypharmaapp.R
+import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.screen_login.*
-
 
 
 class LoginScreen : AppCompatActivity() {
@@ -61,7 +57,21 @@ class LoginScreen : AppCompatActivity() {
 
                         }else{
                             loadingDialog.dismiss()
-                            showErrorMessage("Username or Password is wrong")
+                            try {
+                                throw result.exception!!
+                            }catch(e:FirebaseAuthException){
+                                when (e.errorCode) {
+                                    "ERROR_USER_NOT_FOUND" -> {
+                                        showErrorMessage("The email address you entered is wrong")
+                                    }
+                                    "ERROR_WRONG_PASSWORD" -> {
+                                        showErrorMessage("The password is not matching with the email account")
+                                    }
+                                    else -> {
+                                        showErrorMessage("Something went wrong please contact technical support")
+                                    }
+                                }
+                            }
                         }
                     }
                 }else{
@@ -73,6 +83,8 @@ class LoginScreen : AppCompatActivity() {
                         textInputPassword.helperText = "*Enter Password..."
                     }
                 }
+            }catch(e:FirebaseAuthException){
+                showErrorMessage(e.errorCode)
             }catch(e:Exception){
                 showErrorMessage("Something went wrong contact technical support")
             }
