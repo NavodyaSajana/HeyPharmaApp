@@ -161,7 +161,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputName"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp" />
+                            android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -184,7 +184,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputAddressLine1"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp" />
+                            android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -207,7 +207,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputAddressLine2"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp" />
+                            android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -230,7 +230,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputCity"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp" />
+                            android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -253,7 +253,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputProvince"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp" />
+                            android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -277,7 +277,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputTp"
                             android:layout_width="match_parent"
-                            android:layout_height="32dp" />
+                            android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
