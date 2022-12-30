@@ -101,7 +101,7 @@
     <ScrollView
 
         android:layout_width="fill_parent"
-        android:layout_height="410dp">
+        android:layout_height="380dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -145,7 +145,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Find Med"
+                        android:text="Find\nMed"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textColor="@color/darkgray" />
@@ -192,7 +192,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginBottom="8dp"
-                        android:text="My Prescriptions"
+                        android:text="My\nPrescriptions"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textColor="@color/darkgray" />
@@ -278,7 +278,7 @@
                         android:layout_marginBottom="8dp"
                         android:contentDescription=""
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/drugs" />
+                        app:srcCompat="@drawable/quote" />
 
                     <TextView
                         android:layout_width="match_parent"
