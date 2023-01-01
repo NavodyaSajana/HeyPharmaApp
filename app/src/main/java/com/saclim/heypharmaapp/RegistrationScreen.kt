@@ -12,7 +12,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.saclim.heypharmaapp.R
@@ -100,7 +102,11 @@ class RegistrationScreen : AppCompatActivity() {
                 }else if(pass.isNullOrEmpty()){
                     clearErrorMessages()
                     textInputPasswordRg.setHelperText("*Enter Valid Password")
-                }else if(comPass.isNullOrEmpty()){
+                }else if(pass.length<8){
+                    clearErrorMessages()
+                    textInputPasswordRg.setHelperText("*Enter More That 8 Characters On Password")
+                }
+                else if(comPass.isNullOrEmpty()){
                     clearErrorMessages()
                     textInputRePassword.setHelperText("*Confirm Your Password")
                 }else if(comPass!=pass){
@@ -123,11 +129,29 @@ class RegistrationScreen : AppCompatActivity() {
                                 }else{
                                     loadingDialog.dismissWithAnimation()
                                     showErrorMessage("Unable to Register User Please Contact Administration")
+
                                 }
                             }
                         }else{
                             loadingDialog.dismissWithAnimation()
-                            showErrorMessage("User Registration Failed Try Again")
+                            try{
+                                throw result.exception!!
+                            }catch (e:FirebaseAuthException){
+                                when(e.errorCode){
+                                    "ERROR_EMAIL_ALREADY_IN_USE"->{
+                                        showErrorMessage("The email is already in use")
+                                    }
+                                    "ERROR_WEAK_PASSWORD"->{
+                                        showErrorMessage("This password is weak use strong password")
+                                    }
+                                    "ERROR_INVALID_EMAIL"->{
+                                        showErrorMessage("Email Structure is invalid\nEx: use xxx@xxx.xxx")
+                                    }
+                                    else->{
+                                        showErrorMessage("Something went wrong please contact technical support")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
