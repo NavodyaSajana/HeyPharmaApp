@@ -7,6 +7,7 @@
     android:id="@+id/main_tab">
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -29,9 +30,12 @@
 
 
             <LinearLayout
+                android:id="@+id/select_prescription_click"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:id="@+id/imgPrescription"
@@ -49,54 +53,54 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_vertical">
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/txtRePreId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Prescription ID"
                         android:layout_marginTop="8dp"
+                        android:text="Prescription ID"
                         android:textColor="@color/darkgray" />
 
                     <TextView
                         android:id="@+id/txtRePrePhaName"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:text="Pharmacy Name" />
 
                     <TextView
                         android:id="@+id/txtRePreTp"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:text="Telephone" />
 
                     <TextView
                         android:id="@+id/txtRePreBuyerEmail"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:text="Buyer Email" />
 
                     <TextView
                         android:id="@+id/txtRePrePrice"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:text="Price" />
 
                     <TextView
                         android:id="@+id/txtRePreStatus"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="3dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
                         android:layout_marginBottom="8dp"
-                        android:textColor="@color/green"
-                        android:text="Status" />
+                        android:text="Status"
+                        android:textColor="@color/green" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

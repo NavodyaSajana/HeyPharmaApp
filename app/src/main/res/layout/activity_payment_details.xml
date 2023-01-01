@@ -217,8 +217,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="3dp"
-                            android:textSize="18dp"
-                            android:textColor="@color/black" />
+                            android:inputType="number"
+                            android:maxLength="19"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
 
                     </LinearLayout>
 
@@ -285,8 +287,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="3dp"
-                            android:textSize="18dp"
-                            android:textColor="@color/black" />
+                            android:inputType="numberPassword"
+                            android:maxLength="3"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
 
                     </LinearLayout>
 
@@ -318,10 +322,12 @@
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:layout_marginBottom="20dp"
                             android:layout_marginTop="3dp"
-                            android:textSize="18dp"
-                            android:textColor="@color/black" />
+                            android:layout_marginBottom="20dp"
+                            android:inputType="date"
+                            android:maxLength="5"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
 
                     </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.saclim.heypharmaapp
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,6 +33,7 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
 import kotlinx.android.synthetic.main.activity_my_prescription.*
 import kotlinx.android.synthetic.main.my_prescriptions_recycler_item.*
+import org.w3c.dom.Text
 import java.io.File
 
 class MyPrescription : AppCompatActivity() {
@@ -42,10 +44,13 @@ class MyPrescription : AppCompatActivity() {
     private lateinit var myPrescriptionRecyclePresciption:RecyclerView
     private lateinit var loadingDialog:SweetAlertDialog
     private lateinit var errorDialog:SweetAlertDialog
+    private lateinit var confirmDialog:SweetAlertDialog
+    private lateinit var successDialog:SweetAlertDialog
     private lateinit var pharmacyList:ArrayList<Pharmacy>
     private lateinit var storageReference: StorageReference
     private lateinit var firebaseStorage: FirebaseStorage
     private var imageUri: Uri?=null
+    private lateinit var shipAddressStatus:String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +63,7 @@ class MyPrescription : AppCompatActivity() {
         myPrescriptionRecyclePresciption.layoutManager = LinearLayoutManager(this)
         myPrescriptionRecyclePresciption.setHasFixedSize(true)
         pharmacyList = arrayListOf<Pharmacy>()
+        shipAddressStatus=""
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
@@ -94,18 +100,15 @@ class MyPrescription : AppCompatActivity() {
         loadPrescriptionDetails()
 
         
-        
     }
     private fun loadPrescriptionDetails(){
+        checkShippingAddress()
         showLoadingMessage("Loading Prescription Details...")
 
         firebaseAuth = FirebaseAuth.getInstance()
         val userID:String = firebaseAuth.currentUser!!.uid.toString()
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Prescription")
-
-
-
         databaseReference.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -114,7 +117,7 @@ class MyPrescription : AppCompatActivity() {
                         val prescription = prescriptionSnapshot.getValue(com.saclim.heypharmaapp.Presciption::class.java)
                         if(prescription==null){showErrorMessage("Prescription Null")}
 
-                        if(prescription!!.Member_id==userID){
+                        if(prescription!!.Member_id==userID && prescription!!.Status!="Ordered"){
                             prescriptionList.add(prescription)
                         }
                     }
@@ -160,7 +163,11 @@ class MyPrescription : AppCompatActivity() {
             })
 
             holder.txtRePreId.text=currentItem.Prescription_id
-            holder.txtRePrePrice.text="LKR"
+            holder.txtRePreBuyerEmail.text = ""
+            if(currentItem.Pres_price==null)
+                holder.txtRePrePrice.text="0.00"
+            else
+                holder.txtRePrePrice.text=currentItem.Pres_price
             holder.txtRePreStatus.text=currentItem.Status
 
             storageReference = FirebaseStorage.getInstance().getReference(currentItem.Pres_Image.toString())
@@ -172,6 +179,66 @@ class MyPrescription : AppCompatActivity() {
                     .load(bitmap)
                     .override(100,110)
                     .into(holder.imgPrescription)
+            }
+            if(currentItem.Status=="Pending") {
+                holder.select_prescription_click.setBackgroundColor(Color.parseColor("#FC7D96"))
+                holder.txtRePreId.setTextColor(Color.parseColor("#000000"))
+            }else{
+                holder.select_prescription_click.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                holder.txtRePreId.setTextColor(Color.parseColor("#A9A9A9"))
+            }
+            holder.select_prescription_click.setOnClickListener {
+                val selectedItem = prescriptionList[position]
+                if(selectedItem.Status!="Pending") {
+                    if(!shipAddressStatus.isNullOrEmpty()) {
+                        showConfirmMessage("Are you sure to buy prescription: ${selectedItem.Prescription_id}")
+                        confirmDialog.setConfirmButton(
+                            "Yes",
+                            SweetAlertDialog.OnSweetClickListener {
+                                startBuyNow(selectedItem.Prescription_id.toString())
+                                confirmDialog.dismissWithAnimation()
+
+                            })
+                        confirmDialog.setCancelButton("No", SweetAlertDialog.OnSweetClickListener {
+                            Toast.makeText(applicationContext, "Not Selected", Toast.LENGTH_SHORT)
+                                .show()
+                            confirmDialog.dismissWithAnimation()
+                        })
+                    }else{
+                        showErrorMessage("Enter your shipping address to continue")
+                    }
+                }else{
+                    showErrorMessage("This prescription still under process\nwe will get back to you soon...!")
+                }
+            }
+
+            holder.select_prescription_click.setOnLongClickListener {
+                val selectedItem = prescriptionList[position]
+                this@MyPrescription.showConfirmMessage("Are you sure to delete prescription: ${selectedItem.Prescription_id}")
+                    confirmDialog.setCustomImage(R.drawable.ic_baseline_priority_high_24)
+                    confirmDialog.setConfirmButton("Yes", SweetAlertDialog.OnSweetClickListener {
+                        databaseReference = FirebaseDatabase.getInstance().getReference("Prescription").child(selectedItem.Prescription_id.toString())
+                        databaseReference.addListenerForSingleValueEvent(object :ValueEventListener{
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                snapshot.ref.removeValue()
+                                showSuccessMessage("Prescription Deleted Successfully...!")
+                                successDialog.setConfirmButton("OK",SweetAlertDialog.OnSweetClickListener {
+                                    restartThis()
+                                })
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                showErrorMessage(error.message)
+                            }
+                        })
+                        confirmDialog.dismissWithAnimation()
+
+                    })
+                    confirmDialog.setCancelButton("No", SweetAlertDialog.OnSweetClickListener {
+                        Toast.makeText(applicationContext, "Not Selected", Toast.LENGTH_SHORT).show()
+                        confirmDialog.dismissWithAnimation()
+                    })
+
+                return@setOnLongClickListener true
             }
 
         }
@@ -188,7 +255,35 @@ class MyPrescription : AppCompatActivity() {
         val txtRePrePrice : TextView = itemView.findViewById(R.id.txtRePrePrice)
         val txtRePreStatus : TextView = itemView.findViewById(R.id.txtRePreStatus)
         val imgPrescription : ImageView = itemView.findViewById(R.id.imgPrescription)
+        val txtRePreBuyerEmail : TextView = itemView.findViewById(R.id.txtRePreBuyerEmail)
+        val select_prescription_click : LinearLayout = itemView.findViewById(R.id.select_prescription_click)
 
+    }
+    private fun checkShippingAddress() {
+        firebaseAuth = FirebaseAuth.getInstance()
+        databaseReference = FirebaseDatabase.getInstance().getReference("ShippingAddress").child(firebaseAuth.currentUser!!.uid)
+        databaseReference.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val shipAdd = snapshot.getValue<ShippingAddress>()
+                if(shipAdd!=null){
+                    shipAddressStatus= shipAdd.fullName.toString()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                shipAddressStatus=""
+            }
+        })
+    }
+    private fun startBuyNow(prescriptionID:String){
+        val intent= Intent(this, BuyNow::class.java)
+        finish()
+        intent.putExtra("prescriptionID",prescriptionID)
+        startActivity(intent)
+    }
+    private fun restartThis(){
+        val intent= Intent(this, MyPrescription::class.java)
+        finish()
+        startActivity(intent)
     }
     private fun showLoadingMessage(message:String){
         loadingDialog = SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE)
@@ -203,5 +298,20 @@ class MyPrescription : AppCompatActivity() {
         errorDialog.setTitleText("Error...!")
         errorDialog.setContentText(errorText)
         errorDialog.show()
+    }
+    private fun showConfirmMessage(message:String){
+        confirmDialog = SweetAlertDialog(this,SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+        confirmDialog.setCancelable(true)
+        confirmDialog.setCustomImage(R.drawable.question_mark)
+        confirmDialog.setTitleText("Confirm...!")
+        confirmDialog.setContentText(message)
+        confirmDialog.show()
+    }
+    private fun showSuccessMessage(message:String){
+        successDialog = SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE)
+        successDialog.setCancelable(true)
+        successDialog.setTitleText("Done...!")
+        successDialog.setContentText(message)
+        successDialog.show()
     }
 }
