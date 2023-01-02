@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/topprofilebar"
     android:orientation="vertical"
-    tools:context=".ScanDetails"
+    tools:context=".ScanDetailsMedication"
     android:background="@color/white">
 
 
@@ -39,35 +39,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--<de.hdodenhof.circleimageview.CircleImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/profile3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/appname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
                 android:text="HEY PHARMA"
                 android:textColor="@color/lightblue"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image" />
-
-            <TextView
-                android:id="@+id/welcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Welcome Back Disha "
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/appname"
-                app:layout_constraintTop_toBottomOf="@+id/appname" />
 
             <ImageView
                 android:id="@+id/notificationsImage"

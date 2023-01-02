@@ -5,22 +5,30 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
+import kotlinx.android.synthetic.main.activity_payment_details.*
+import kotlinx.android.synthetic.main.screen_login.*
+import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class PaymentDetails : AppCompatActivity() {
-    private lateinit var txtCardNo:EditText
+    private lateinit var txtCardNo:TextInputEditText
     private lateinit var txtAddressNo:TextView
-    private lateinit var txtCardBank:EditText
+    private lateinit var txtCardBank:TextInputEditText
+    private lateinit var txtCardCvc:TextInputEditText
+    private lateinit var txtCardExDate:TextInputEditText
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var loadingDialog: SweetAlertDialog
@@ -40,7 +48,10 @@ class PaymentDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_details)
 
+        clearErrorMessages()
+
         bottomNavigationView.background = null
+        bottomNavigationView.menu.getItem(0).isChecked=false
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -85,6 +96,8 @@ class PaymentDetails : AppCompatActivity() {
         txtCardNo = findViewById(R.id.txtCardNo)
         txtAddressNo = findViewById(R.id.txtAddressName)
         txtCardBank = findViewById(R.id.txtCardBank)
+        txtCardCvc = findViewById(R.id.txtCardCvc)
+        txtCardExDate = findViewById(R.id.txtCardExDate)
         btnBuy = findViewById(R.id.btnBuy)
         radiobtnCod = findViewById(R.id.radioBtnCod)
         radioCard = findViewById(R.id.radioCard)
@@ -109,17 +122,90 @@ class PaymentDetails : AppCompatActivity() {
         }
 
         btnBuy.setOnClickListener {
-            showConfirmMessage("Are you sure to place the order?")
-            confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
-                confirmDialog.dismissWithAnimation()
-                createNewOrder()
-            })
-            confirmDialog.setCancelButton("No",SweetAlertDialog.OnSweetClickListener {
-                confirmDialog.dismissWithAnimation()
-            })
+            try{
+                val txtCardNo=txtCardNo.text.toString()
+                val txtCardBank=txtCardBank.text.toString()
+                val txtCardCvc=txtCardCvc.text.toString()
+                val txtCardExDate=txtCardExDate.text.toString()
+
+
+
+
+                if(txtCardNo.isNullOrEmpty()) {
+                    clearErrorMessages()
+                    txtCardNo1.helperText = "*Enter Card No"
+
+                } else if(!txtCardNo.isDigitsOnly()) {
+                        clearErrorMessages()
+                        txtCardNo1.helperText = "*Card No Cannot Have Letters"
+
+                }else if(txtCardNo.length<16) {
+                    clearErrorMessages()
+                    txtCardNo1.helperText = "*Enter valid Card No"
+
+                }else if(txtCardNo.length>16) {
+                    clearErrorMessages()
+                    txtCardNo1.helperText = "*Enter valid Card No"
+
+                }else if(txtCardBank.isNullOrEmpty()){
+                    clearErrorMessages()
+                    txtCardBank1.helperText = "*Enter Bank Name"
+
+                } else if(txtCardBank.isDigitsOnly()) {
+                    clearErrorMessages()
+                    txtCardBank1.helperText = "*Bank Name Cannot Have Numbers"
+
+                }else if(txtCardCvc.isNullOrEmpty()){
+                    clearErrorMessages()
+                    txtCardCvc1.helperText = "*Enter CVC"
+
+                } else if(!txtCardCvc.isDigitsOnly()) {
+                    clearErrorMessages()
+                    txtCardCvc1.helperText = "*CVC Cannot Have Letters"
+
+                } else if(txtCardCvc.length<3) {
+                    clearErrorMessages()
+                    txtCardCvc1.helperText = "*Enter valid CVC No"
+
+                }else if(txtCardCvc.length>3) {
+                        clearErrorMessages()
+                        txtCardCvc1.helperText = "*Enter valid CVC No"
+
+                }else if(txtCardExDate.isNullOrEmpty()){
+                    clearErrorMessages()
+                    txtCardExDate1.helperText = "*Enter Expire Date"
+
+                }else if(radiobtnCod.isChecked) {
+
+                    clearErrorMessages()
+                    showErrorMessage("please select the right payment method")
+                }
+                else{
+                    clearErrorMessages()
+                    showConfirmMessage("Are you sure to place the order?")
+                    confirmDialog.setConfirmButton("Yes",SweetAlertDialog.OnSweetClickListener {
+                        confirmDialog.dismissWithAnimation()
+                        createNewOrder()
+                    })
+                    confirmDialog.setCancelButton("No",SweetAlertDialog.OnSweetClickListener {
+                        confirmDialog.dismissWithAnimation()
+                    })
+                }
+            }catch(e: FirebaseAuthException){
+                showErrorMessage(e.errorCode)
+            }catch(e:Exception){
+                showErrorMessage("Something went wrong contact technical support")
+            }
         }
 
 
+    }
+
+    private fun clearErrorMessages(){
+        txtCardNo1.helperText = ""
+        txtCardBank1.helperText = ""
+        txtCardCvc1.helperText = ""
+        txtCardExDate1.helperText = ""
     }
 
     private fun createNewOrder(){

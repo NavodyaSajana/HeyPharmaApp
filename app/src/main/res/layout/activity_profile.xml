@@ -53,22 +53,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
                 android:text="HEY PHARMA"
                 android:textColor="@color/lightblue"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image" />
-
-            <TextView
-                android:id="@+id/welcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Welcome BACK "
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/appname"
-                app:layout_constraintTop_toBottomOf="@+id/appname" />
-
             <ImageView
                 android:id="@+id/notificationsImage"
                 android:layout_width="30dp"

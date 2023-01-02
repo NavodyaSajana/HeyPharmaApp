@@ -53,21 +53,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
                 android:text="HEY PHARMA"
                 android:textColor="@color/lightblue"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image" />
-
-            <TextView
-                android:id="@+id/welcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Welcome Back "
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/appname"
-                app:layout_constraintTop_toBottomOf="@+id/appname" />
 
             <ImageView
                 android:id="@+id/notificationsImage"
@@ -211,16 +202,26 @@
                             android:textSize="18dp"
                             android:textColor="@color/black" />
 
-                        <EditText
-                            android:id="@+id/txtCardNo"
-                            android:layout_width="180dp"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/txtCardNo1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="3dp"
+                            app:helperText="Required"
+                            app:helperTextTextColor="@color/red"
                             android:inputType="number"
                             android:maxLength="19"
                             android:textColor="@color/black"
-                            android:textSize="18dp" />
+                            android:textSize="18dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtCardNo"
+                            android:background="@color/white"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -247,14 +248,26 @@
                             android:textSize="18dp"
                             android:textColor="@color/black" />
 
-                        <EditText
-                            android:id="@+id/txtCardBank"
-                            android:layout_width="180dp"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/txtCardBank1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="3dp"
-                            android:textSize="18dp"
-                            android:textColor="@color/black" />
+                            app:helperText="Required"
+                            app:helperTextTextColor="@color/red"
+                            android:inputType="number"
+                            android:maxLength="19"
+                            android:textColor="@color/black"
+                            android:textSize="18dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txtCardBank"
+                                android:background="@color/white"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -281,16 +294,26 @@
                             android:textSize="18dp"
                             android:textColor="@color/black" />
 
-                        <EditText
-                            android:id="@+id/txtCardCvc"
-                            android:layout_width="180dp"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/txtCardCvc1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="3dp"
-                            android:inputType="numberPassword"
-                            android:maxLength="3"
+                            app:helperText="Required"
+                            app:helperTextTextColor="@color/red"
+                            android:inputType="number"
+                            android:maxLength="19"
                             android:textColor="@color/black"
-                            android:textSize="18dp" />
+                            android:textSize="18dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txtCardCvc"
+                                android:background="@color/white"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -305,6 +328,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginBottom="72dp"
                             android:text="EX Date"
                             android:textSize="18dp"
                             android:textColor="@color/black" />
@@ -317,17 +341,26 @@
                             android:textSize="18dp"
                             android:textColor="@color/black" />
 
-                        <EditText
-                            android:id="@+id/txtCardExDate"
-                            android:layout_width="180dp"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/txtCardExDate1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="3dp"
-                            android:layout_marginBottom="20dp"
-                            android:inputType="date"
-                            android:maxLength="5"
+                            app:helperText="Required"
+                            app:helperTextTextColor="@color/red"
+                            android:inputType="number"
+                            android:maxLength="19"
                             android:textColor="@color/black"
-                            android:textSize="18dp" />
+                            android:textSize="18dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/txtCardExDate"
+                                android:background="@color/white"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 

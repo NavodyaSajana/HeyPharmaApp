@@ -59,15 +59,39 @@
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="@+id/profile_image" />
 
-            <TextView
-                android:id="@+id/welcome"
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome Back Disha "
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/appname"
-                app:layout_constraintTop_toBottomOf="@+id/appname" />
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/appname" android:layout_marginLeft="132dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/welcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome Back "
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="60dp"
+                    app:layout_constraintStart_toStartOf="@+id/appname"
+                    app:layout_constraintTop_toBottomOf="@+id/appname" />
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disha"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@+id/appname"
+                    app:layout_constraintTop_toBottomOf="@+id/appname" />
+
+
+
+            </LinearLayout>
+
 
             <ImageView
                android:id="@+id/notificationsImage"

@@ -86,6 +86,7 @@ class BuyMedicine : AppCompatActivity() {
 
 
         bottomNavigationView.background = null
+        bottomNavigationView.menu.getItem(0).isChecked=false
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
