@@ -7,7 +7,7 @@ import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
-class Dashboard : AppCompatActivity() {
+class DashboardHome : AppCompatActivity() {
 
     private lateinit var findMed:CardView
     private lateinit var myPrescriptions:CardView
@@ -55,14 +55,14 @@ class Dashboard : AppCompatActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        findMed.setOnClickListener(){
+        findMed.setOnClickListener{
             val intent= Intent(this, ScanHere::class.java)
             finish()
             startActivity(intent)
 
         }
 
-        myPrescriptions.setOnClickListener(){
+        myPrescriptions.setOnClickListener{
             val intent= Intent(this, MyPrescription::class.java)
             finish()
             startActivity(intent)

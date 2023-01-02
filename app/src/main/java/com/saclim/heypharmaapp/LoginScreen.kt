@@ -52,7 +52,7 @@ class LoginScreen : AppCompatActivity() {
                     firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener { result->
                         if(result.isSuccessful){
                             loadingDialog.dismiss()
-                            val intent = Intent(this, Dashboard::class.java)
+                            val intent = Intent(this, DashboardHome::class.java)
                             startActivity(intent)
 
                         }else{
