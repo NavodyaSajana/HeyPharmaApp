@@ -129,56 +129,50 @@ class PaymentDetails : AppCompatActivity() {
                 val txtCardExDate=txtCardExDate.text.toString()
 
 
-
-
-                if(txtCardNo.isNullOrEmpty()) {
+                if(radioCard.isChecked && txtCardNo.isNullOrEmpty()) {
                     clearErrorMessages()
                     txtCardNo1.helperText = "*Enter Card No"
 
-                } else if(!txtCardNo.isDigitsOnly()) {
+                } else if(radioCard.isChecked && !txtCardNo.isDigitsOnly()) {
                         clearErrorMessages()
                         txtCardNo1.helperText = "*Card No Cannot Have Letters"
 
-                }else if(txtCardNo.length<16) {
+                }else if(radioCard.isChecked && txtCardNo.length<16) {
                     clearErrorMessages()
                     txtCardNo1.helperText = "*Enter valid Card No"
 
-                }else if(txtCardNo.length>16) {
+                }else if(radioCard.isChecked && txtCardNo.length>16) {
                     clearErrorMessages()
                     txtCardNo1.helperText = "*Enter valid Card No"
 
-                }else if(txtCardBank.isNullOrEmpty()){
+                }else if(radioCard.isChecked && txtCardBank.isNullOrEmpty()){
                     clearErrorMessages()
                     txtCardBank1.helperText = "*Enter Bank Name"
 
-                } else if(txtCardBank.isDigitsOnly()) {
+                } else if(radioCard.isChecked && txtCardBank.isDigitsOnly()) {
                     clearErrorMessages()
                     txtCardBank1.helperText = "*Bank Name Cannot Have Numbers"
 
-                }else if(txtCardCvc.isNullOrEmpty()){
+                }else if(radioCard.isChecked && txtCardCvc.isNullOrEmpty()){
                     clearErrorMessages()
                     txtCardCvc1.helperText = "*Enter CVC"
 
-                } else if(!txtCardCvc.isDigitsOnly()) {
+                } else if(radioCard.isChecked && !txtCardCvc.isDigitsOnly()) {
                     clearErrorMessages()
                     txtCardCvc1.helperText = "*CVC Cannot Have Letters"
 
-                } else if(txtCardCvc.length<3) {
+                } else if(radioCard.isChecked && txtCardCvc.length<3) {
                     clearErrorMessages()
                     txtCardCvc1.helperText = "*Enter valid CVC No"
 
-                }else if(txtCardCvc.length>3) {
+                }else if(radioCard.isChecked && txtCardCvc.length>3) {
                         clearErrorMessages()
                         txtCardCvc1.helperText = "*Enter valid CVC No"
 
-                }else if(txtCardExDate.isNullOrEmpty()){
+                }else if(radioCard.isChecked && txtCardExDate.isNullOrEmpty()){
                     clearErrorMessages()
                     txtCardExDate1.helperText = "*Enter Expire Date"
 
-                }else if(radiobtnCod.isChecked) {
-
-                    clearErrorMessages()
-                    showErrorMessage("please select the right payment method")
                 }
                 else{
                     clearErrorMessages()

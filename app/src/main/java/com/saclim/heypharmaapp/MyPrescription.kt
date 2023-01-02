@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -51,6 +52,7 @@ class MyPrescription : AppCompatActivity() {
     private lateinit var firebaseStorage: FirebaseStorage
     private var imageUri: Uri?=null
     private lateinit var shipAddressStatus:String
+    private lateinit var btnMyPrescriptionCancel:MaterialButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +66,7 @@ class MyPrescription : AppCompatActivity() {
         myPrescriptionRecyclePresciption.setHasFixedSize(true)
         pharmacyList = arrayListOf<Pharmacy>()
         shipAddressStatus=""
+        btnMyPrescriptionCancel = findViewById(R.id.btnMyPrescriptionCancel)
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(0).isChecked=false
@@ -103,6 +106,11 @@ class MyPrescription : AppCompatActivity() {
 
         loadPrescriptionDetails()
 
+        btnMyPrescriptionCancel.setOnClickListener {
+            val intent = Intent(this,DashboardHome::class.java)
+            finish()
+            startActivity(intent)
+        }
         
     }
     private fun loadPrescriptionDetails(){

@@ -3,8 +3,17 @@ package com.saclim.heypharmaapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_dashboard.Pharmacy
 import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
@@ -16,6 +25,9 @@ class DashboardHome : AppCompatActivity() {
     private lateinit var myPrescriptions:CardView
     private lateinit var getQuote:CardView
     private lateinit var pharmacy:CardView
+    private lateinit var username:TextView
+    private lateinit var loadingDialog: SweetAlertDialog
+    private lateinit var errorDialog: SweetAlertDialog
 
 
 
@@ -27,6 +39,7 @@ class DashboardHome : AppCompatActivity() {
         myPrescriptions = findViewById(R.id.MyPrescriptions)
         getQuote = findViewById(R.id.GetQuote)
         pharmacy = findViewById(R.id.Pharmacy)
+        username = findViewById(R.id.username)
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(0).isChecked=true
@@ -94,9 +107,44 @@ class DashboardHome : AppCompatActivity() {
             startActivity(intent)
         }
 
+        try {
+            loadUserDetails()
+        }catch (e:Exception) {
+            showErrorMessage(e.message.toString())
+        }
     }
+    private fun loadUserDetails(){
+        showLoadingMessage("Loading your details please wait...")
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Member").child(firebaseAuth.currentUser!!.uid)
+        databaseReference.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                loadingDialog.dismissWithAnimation()
+                val memberDetails = snapshot.getValue<Member>()
+                if(memberDetails!=null) {
+                    username.text=memberDetails.name
+                }else {
+                    loadingDialog.dismissWithAnimation()
+                }
+            }
 
-
-
-
-}
+            override fun onCancelled(error: DatabaseError) {
+                loadingDialog.dismissWithAnimation()
+            }
+        })
+        }
+    private fun showLoadingMessage(message:String){
+        loadingDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            .setTitleText("Please Wait...")
+            .setContentText(message)
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
+    }
+    private fun showErrorMessage(errorText:String){
+        errorDialog = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+        errorDialog.setCancelable(true)
+        errorDialog.setTitleText("Error...!")
+        errorDialog.setContentText(errorText)
+        errorDialog.show()
+    }
+    }

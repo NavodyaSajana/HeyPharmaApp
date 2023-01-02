@@ -15,6 +15,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class BuyNow : AppCompatActivity() {
     private lateinit var prescriptionID:String
@@ -89,6 +91,7 @@ class BuyNow : AppCompatActivity() {
             loadPrescriptionDetails()
 
         }else{
+            loadingDialog.dismissWithAnimation()
             val intent = Intent(this,MyPrescription::class.java)
             finish()
             startActivity(intent)
@@ -115,9 +118,10 @@ class BuyNow : AppCompatActivity() {
         databaseReference.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                loadingDialog.dismissWithAnimation()
                 val prescription = snapshot.getValue<Presciption>()
                 if(prescription!=null){
-                    loadingDialog.dismissWithAnimation()
+
                     pharmacyID=prescription.Phar_Id.toString()
                     total=prescription.Pres_price!!.toDouble()
                     presID = prescription.Prescription_id.toString()
@@ -134,29 +138,31 @@ class BuyNow : AppCompatActivity() {
         })
     }
     private fun loadPharmacyDetails(){
-        showLoadingMessage("Loading Pharmacy Details")
+        //showLoadingMessage("Loading Pharmacy Details...")
         databaseReference = FirebaseDatabase.getInstance().getReference("Pharmacy").child(pharmacyID)
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                //loadingDialog.dismissWithAnimation()
                 val pharmacy = snapshot.getValue<Pharmacy>()
                 if (pharmacy != null) {
-                    loadingDialog.dismissWithAnimation()
                     txtPharmacyName.setText(pharmacy.Name)
                     txtPharmacyTp.setText(pharmacy.telephone)
                 }else{
-                    loadingDialog.dismissWithAnimation()
+                    //loadingDialog.dismissWithAnimation()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-                loadingDialog.dismissWithAnimation()
+                //loadingDialog.dismissWithAnimation()
             }
         })
     }
     private fun calculateBillPrice(){
-        txtTotal.setText(total.toString())
-        txtCharges.setText((total*0.2).toString())
+        val df = DecimalFormat("#.##")
+        df.roundingMode = RoundingMode.DOWN
+        txtTotal.setText(df.format(total).toString())
+        txtCharges.setText(df.format((total*0.2)).toString())
         netTotal = (total+total*0.2)
-        txtNet.setText(netTotal.toString())
+        txtNet.setText(df.format(netTotal).toString())
     }
     private fun showLoadingMessage(message:String){
         loadingDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)

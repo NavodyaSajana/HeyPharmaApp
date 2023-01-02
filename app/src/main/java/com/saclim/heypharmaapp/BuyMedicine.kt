@@ -394,7 +394,7 @@ class BuyMedicine : AppCompatActivity() {
         val member_id:String = firebaseAuth.currentUser!!.uid.toString()
         val pres_image:String = "prescription/pres-${UUID.randomUUID().toString()}"
         val phar_id:String = pharmacyTelephone
-        val prescriptionID = UUID.randomUUID().toString()
+        val prescriptionID = "HPP-${(0..9999999).shuffled().last()}"
 
         showLoadingMessage("Saving Prescription Details...")
         if(imageUri!=null){
@@ -410,6 +410,12 @@ class BuyMedicine : AppCompatActivity() {
                         if(result.isSuccessful){
                             loadingDialog.dismissWithAnimation()
                             showSuccessMessage("Prescription Saved...")
+                            successDialog.setConfirmButton("OK",SweetAlertDialog.OnSweetClickListener {
+                                val intent = Intent(this,DashboardHome::class.java)
+                                successDialog.dismissWithAnimation()
+                                finish()
+                                startActivity(intent)
+                            })
                         }else{
                             loadingDialog.dismissWithAnimation()
                             showErrorMessage("Something went wrong try again...")
