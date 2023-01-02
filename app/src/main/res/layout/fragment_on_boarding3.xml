@@ -38,7 +38,7 @@
                 android:text="Easy Payment Methods"
                 android:textAlignment="center"
                 android:textSize="25dp"
-                android:textColor="@color/lightblue" />
+                android:textColor="@color/bluegreen" />
 
             <TextView
                 android:id="@+id/walkthrough3Description"
@@ -48,7 +48,7 @@
                 android:text="You can pay on cash or online using your payment wallets "
                 android:textAlignment="center"
                 android:textSize="15dp"
-                android:textColor="@color/lightgray" />
+                android:textColor="@color/darkgray" />
 
             <Button
                 android:id="@+id/btnletsBegin"
@@ -57,7 +57,7 @@
                 android:layout_marginTop="30dp"
                 android:text="Lets Begin"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/lightblue" />
+                app:backgroundTint="@color/bluegreen" />
 
         </LinearLayout>
 
