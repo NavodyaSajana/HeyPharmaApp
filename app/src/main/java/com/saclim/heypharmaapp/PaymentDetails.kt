@@ -7,10 +7,12 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -37,6 +39,41 @@ class PaymentDetails : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_details)
+
+        bottomNavigationView.background = null
+
+        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.Payment -> {
+                    val intent= Intent(this, Payment::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Logout -> {
+                    val intent= Intent(this, LoginScreen::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Profile -> {
+                    val intent= Intent(this, Profile::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Home->{
+                    val intent=Intent(this,DashboardHome::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+
+            }
+            false
+        }
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         val extra = intent.extras
         if(extra!=null){

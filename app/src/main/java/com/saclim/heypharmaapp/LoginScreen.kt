@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.*
+import kotlinx.android.synthetic.main.activity_forget_password.*
 import kotlinx.android.synthetic.main.screen_login.*
 
 
@@ -36,6 +37,12 @@ class LoginScreen : AppCompatActivity() {
         lblLoginRegister.setOnClickListener{
             clearErrorMessages()
             val intent = Intent(this, RegistrationScreen::class.java)
+            startActivity(intent)
+        }
+
+        forgotPassword.setOnClickListener{
+            clearErrorMessages()
+            val intent = Intent(this, ForgetPassword::class.java)
             startActivity(intent)
         }
 

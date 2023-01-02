@@ -73,18 +73,12 @@ class ScanDetails : AppCompatActivity() {
                 setDetails(medicationName)
             }
         }
+        bottomNavigationView.background = null
 
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.Payment -> {
                     val intent= Intent(this, Payment::class.java)
-                    finish()
-                    startActivity(intent)
-                    return@OnNavigationItemSelectedListener true
-                }
-
-                R.id.Profile -> {
-                    val intent= Intent(this, Profile::class.java)
                     finish()
                     startActivity(intent)
                     return@OnNavigationItemSelectedListener true
@@ -95,7 +89,18 @@ class ScanDetails : AppCompatActivity() {
                     startActivity(intent)
                     return@OnNavigationItemSelectedListener true
                 }
-
+                R.id.Profile -> {
+                    val intent= Intent(this, Profile::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Home->{
+                    val intent=Intent(this,DashboardHome::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
 
             }
             false

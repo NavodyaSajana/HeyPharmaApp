@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -13,6 +14,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class BuyNow : AppCompatActivity() {
     private lateinit var prescriptionID:String
@@ -35,6 +37,41 @@ class BuyNow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_now)
+
+        bottomNavigationView.background = null
+
+        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.Payment -> {
+                    val intent= Intent(this, Payment::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Logout -> {
+                    val intent= Intent(this, LoginScreen::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Profile -> {
+                    val intent= Intent(this, Profile::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Home->{
+                    val intent=Intent(this,DashboardHome::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+
+            }
+            false
+        }
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         txtPharmacyName = findViewById(R.id.txtPharmacyName)
         txtPharmacyTp = findViewById(R.id.txtPharmacyTp)

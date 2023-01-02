@@ -115,10 +115,12 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
                 android:clickable="true"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -134,8 +136,8 @@
                         android:id="@+id/shippingDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
                         android:text="Shipping Details"
                         android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceHeadline6"
@@ -280,62 +282,6 @@
                             android:layout_height="wrap_content" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/PaymentDetails"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:clickable="true"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ShippingDetailsCard"
-
-                tools:ignore="DuplicateIds,MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/PaymetType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        android:text="Payment Type"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:textColor="@color/darkgray" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioInputCod"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="Cash on Delivery"
-                        android:layout_marginTop="15dp"
-                        android:textSize="16dp"/>
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/radioInputEzCash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:text="EZ Cash"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:textSize="16dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

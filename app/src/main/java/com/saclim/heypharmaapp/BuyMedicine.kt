@@ -67,7 +67,6 @@ class BuyMedicine : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_medicine)
 
-
         cameraPermission = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storagePermission = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
@@ -85,17 +84,13 @@ class BuyMedicine : AppCompatActivity() {
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
 
+
+        bottomNavigationView.background = null
+
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.Payment -> {
                     val intent= Intent(this, Payment::class.java)
-                    finish()
-                    startActivity(intent)
-                    return@OnNavigationItemSelectedListener true
-                }
-
-                R.id.Profile -> {
-                    val intent= Intent(this, Profile::class.java)
                     finish()
                     startActivity(intent)
                     return@OnNavigationItemSelectedListener true
@@ -106,7 +101,18 @@ class BuyMedicine : AppCompatActivity() {
                     startActivity(intent)
                     return@OnNavigationItemSelectedListener true
                 }
-
+                R.id.Profile -> {
+                    val intent= Intent(this, Profile::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Home->{
+                    val intent=Intent(this,DashboardHome::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
 
             }
             false

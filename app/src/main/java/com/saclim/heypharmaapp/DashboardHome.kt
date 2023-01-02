@@ -6,12 +6,17 @@ import android.os.Bundle
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_dashboard.Pharmacy
+import kotlinx.android.synthetic.main.activity_dashboard.bottomNavigationView
+import kotlinx.android.synthetic.main.activity_pharmacy.*
 
 class DashboardHome : AppCompatActivity() {
 
     private lateinit var findMed:CardView
     private lateinit var myPrescriptions:CardView
     private lateinit var getQuote:CardView
+    private lateinit var pharmacy:CardView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +26,7 @@ class DashboardHome : AppCompatActivity() {
         findMed = findViewById(R.id.FindMed)
         myPrescriptions = findViewById(R.id.MyPrescriptions)
         getQuote = findViewById(R.id.GetQuote)
+        pharmacy = findViewById(R.id.Pharmacy)
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(0).isChecked=true
@@ -43,6 +49,13 @@ class DashboardHome : AppCompatActivity() {
                 }
                 R.id.Logout -> {
                     val intent= Intent(this, LoginScreen::class.java)
+                    finish()
+                    startActivity(intent)
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.Home -> {
+                    val intent= Intent(this, DashboardHome::class.java)
                     finish()
                     startActivity(intent)
                     return@OnNavigationItemSelectedListener true
@@ -71,6 +84,12 @@ class DashboardHome : AppCompatActivity() {
 
         getQuote.setOnClickListener{
             val intent= Intent(this, BuyMedicine::class.java)
+            finish()
+            startActivity(intent)
+        }
+
+        pharmacy.setOnClickListener{
+            val intent= Intent(this, Pharmacy::class.java)
             finish()
             startActivity(intent)
         }
