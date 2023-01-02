@@ -51,44 +51,46 @@ class LoginScreen : AppCompatActivity() {
                 val email=loginUsername.text.toString()
                 val pass=loginPassword.text.toString()
 
-                if(email.isNotEmpty() && pass.isNotEmpty()){
+                if(email.isNullOrEmpty()){
                     clearErrorMessages()
-
-                    loadingDialog.setContentText("Login to the HeyPharma")
-                    loadingDialog.show()
-                    firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener { result->
-                        if(result.isSuccessful){
-                            loadingDialog.dismiss()
-                            val intent = Intent(this, DashboardHome::class.java)
-                            startActivity(intent)
-
-                        }else{
-                            loadingDialog.dismiss()
-                            try {
-                                throw result.exception!!
-                            }catch(e:FirebaseAuthException){
-                                when (e.errorCode) {
-                                    "ERROR_USER_NOT_FOUND" -> {
-                                        showErrorMessage("The email address you entered is wrong")
-                                    }
-                                    "ERROR_WRONG_PASSWORD" -> {
-                                        showErrorMessage("The password is not matching with the email account")
-                                    }
-                                    else -> {
-                                        showErrorMessage("Something went wrong please contact technical support")
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    textInputUsername.helperText = "*Enter Email..."
+                }else if(!("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})".toRegex().matches(email))){
+                    clearErrorMessages()
+                    textInputUsername.helperText = "*Enter Valid Email..."
+                }else if(pass.isNullOrEmpty()){
+                    clearErrorMessages()
+                    textInputPassword.helperText = "*Enter Password..."
                 }else{
                     clearErrorMessages()
-                    loadingDialog.dismiss()
-                    if(email.isNullOrEmpty()) {
-                        textInputUsername.helperText = "*Enter Email..."
-                    }else if(pass.isNullOrEmpty()) {
-                        textInputPassword.helperText = "*Enter Password..."
-                    }
+                    loadingDialog.setContentText("Login to the HeyPharma")
+                    loadingDialog.show()
+                    firebaseAuth.signInWithEmailAndPassword(email, pass)
+                        .addOnCompleteListener { result ->
+                            if (result.isSuccessful) {
+                                loadingDialog.dismiss()
+                                val intent = Intent(this, DashboardHome::class.java)
+                                startActivity(intent)
+
+                            } else {
+                                loadingDialog.dismiss()
+                                showErrorMessage(result.exception!!.message.toString())
+                                /*try {
+                                    throw result.exception!!
+                                } catch (e: FirebaseAuthException) {
+                                    when (e.errorCode) {
+                                        "ERROR_USER_NOT_FOUND" -> {
+                                            showErrorMessage("The email address you entered is wrong")
+                                        }
+                                        "ERROR_WRONG_PASSWORD" -> {
+                                            showErrorMessage("The password is not matching with the email account")
+                                        }
+                                        else -> {
+                                            showErrorMessage("Something went wrong please contact technical support")
+                                        }
+                                    }
+                                }*/
+                            }
+                        }
                 }
             }catch(e:FirebaseAuthException){
                 showErrorMessage(e.errorCode)

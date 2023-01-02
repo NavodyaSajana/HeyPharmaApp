@@ -153,9 +153,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
-                            android:text="No"
-                            android:textSize="18dp"
-                            android:textColor="@color/black" />
+                            android:text="Receiver"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -166,7 +166,7 @@
                             android:textColor="@color/black" />
 
                         <TextView
-                            android:id="@+id/txtAddressNo"
+                            android:id="@+id/txtAddressName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -188,9 +188,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
-                            android:text="Street"
-                            android:textSize="18dp"
-                            android:textColor="@color/black" />
+                            android:text="Telephone"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -201,7 +201,7 @@
                             android:textColor="@color/black" />
 
                         <TextView
-                            android:id="@+id/txtAddressStreet"
+                            android:id="@+id/txtAddressNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"

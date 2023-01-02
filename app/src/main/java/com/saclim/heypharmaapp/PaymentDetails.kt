@@ -2,21 +2,18 @@ package com.saclim.heypharmaapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -34,6 +31,9 @@ class PaymentDetails : AppCompatActivity() {
     private var presID:String = ""
     private var billAmount:String = ""
     private var orderID:String="HPO-0"
+    private lateinit var radiobtnCod: MaterialRadioButton
+    private lateinit var radioCard: MaterialRadioButton
+    private var paymentType:String="Cash On Delivery"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,11 +83,30 @@ class PaymentDetails : AppCompatActivity() {
         }
 
         txtCardNo = findViewById(R.id.txtCardNo)
-        txtAddressNo = findViewById(R.id.txtAddressNo)
+        txtAddressNo = findViewById(R.id.txtAddressName)
         txtCardBank = findViewById(R.id.txtCardBank)
         btnBuy = findViewById(R.id.btnBuy)
+        radiobtnCod = findViewById(R.id.radioBtnCod)
+        radioCard = findViewById(R.id.radioCard)
 
         loadShippingAddress()
+
+        radiobtnCod.isChecked=true
+        radioCard.isChecked=false
+
+        radiobtnCod.setOnClickListener {
+            if(radioCard.isChecked) {
+                radioCard.isChecked = false
+                paymentType="Cash On Delivery"
+            }
+        }
+
+        radioCard.setOnClickListener {
+            if(radiobtnCod.isChecked) {
+                radiobtnCod.isChecked = false
+                paymentType="Bank Card"
+            }
+        }
 
         btnBuy.setOnClickListener {
             showConfirmMessage("Are you sure to place the order?")
@@ -99,6 +118,8 @@ class PaymentDetails : AppCompatActivity() {
                 confirmDialog.dismissWithAnimation()
             })
         }
+
+
     }
 
     private fun createNewOrder(){
@@ -110,7 +131,7 @@ class PaymentDetails : AppCompatActivity() {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
         val currentDate = formatter.format(current)
 
-        val NewOrder = Order(orderID,firebaseAuth.currentUser!!.uid,presID,billAmount,"",txtCardNo.text.toString(),txtCardBank.text.toString(),currentDate)
+        val NewOrder = Order(orderID,firebaseAuth.currentUser!!.uid,presID,billAmount,paymentType,txtCardNo.text.toString(),txtCardBank.text.toString(),currentDate)
         databaseReference = FirebaseDatabase.getInstance().getReference("Order")
         databaseReference.child(orderID).setValue(NewOrder).addOnCompleteListener { result->
             if(result.isSuccessful){

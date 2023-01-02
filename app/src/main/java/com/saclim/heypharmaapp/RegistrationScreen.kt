@@ -99,6 +99,9 @@ class RegistrationScreen : AppCompatActivity() {
                 }else if(email.isNullOrEmpty()){
                     clearErrorMessages()
                     textInputUsernameRg.setHelperText("*Enter Your Email")
+                }else if(!("^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})".toRegex().matches(email))){
+                    clearErrorMessages()
+                    textInputUsernameRg.setHelperText("*Enter Valid Email")
                 }else if(pass.isNullOrEmpty()){
                     clearErrorMessages()
                     textInputPasswordRg.setHelperText("*Enter Valid Password")

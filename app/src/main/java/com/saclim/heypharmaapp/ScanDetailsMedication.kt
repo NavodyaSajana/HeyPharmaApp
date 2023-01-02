@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
@@ -36,10 +37,11 @@ private lateinit var firebaseDatabase: FirebaseDatabase
 private lateinit var databaseReference: DatabaseReference
 
 
+private lateinit var successDialog: SweetAlertDialog
+private lateinit var loadingDialog: SweetAlertDialog
 
-private lateinit var progressDialog: ProgressDialog
 
-class ScanDetails : AppCompatActivity() {
+class ScanDetailsMedication : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_details)
@@ -61,15 +63,14 @@ class ScanDetails : AppCompatActivity() {
         scanDetailsRecycle.setHasFixedSize(true)
         pharmacyList = arrayListOf<Pharmacy>()
 
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Please Wait")
-        progressDialog.setCanceledOnTouchOutside(false)
+        showLoadingMessage("Please Wait...")
 
         if (bundle != null) {
             if(bundle.getString("medicationName")!=null){
                 val medicationName = bundle.getString("medicationName").toString()
                 makeToast(medicationName)
                 txtMedication.text = medicationName
+                loadingDialog.dismissWithAnimation()
                 setDetails(medicationName)
             }
         }
@@ -109,7 +110,7 @@ class ScanDetails : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         btnScanDetailsCancel.setOnClickListener{
-            val intent= Intent(this, ScanHere::class.java)
+            val intent= Intent(this, DashboardHome::class.java)
             finish()
             startActivity(intent)
         }
@@ -117,8 +118,7 @@ class ScanDetails : AppCompatActivity() {
 
     }
     private fun setDetails(drugName:String){
-        progressDialog.setMessage("Drug Details Loading...")
-        progressDialog.show()
+        showLoadingMessage("Loading Medication Details...")
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.getReference("Drug")
 
@@ -130,15 +130,18 @@ class ScanDetails : AppCompatActivity() {
                 .load(imageUrl)
                 .override(130, 130)
                 .into(medImg)
+            loadingDialog.dismissWithAnimation()
             setPharmacyDetails(drugName)
-            progressDialog.dismiss()
         }
+            .addOnFailureListener {
+                loadingDialog.dismissWithAnimation()
+                makeToast("Drug Details loading failed")
+            }
     }
 
     private fun setPharmacyDetails(drugName:String) {
         var pharmacyNumbers = ArrayList<String>()
-        progressDialog.setMessage("Pharmacy Details Loading...")
-        progressDialog.show()
+        showLoadingMessage("Loading Pharmacy Details...")
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.getReference("Drug/${drugName}/AvailablePharmacy")
 
@@ -148,19 +151,18 @@ class ScanDetails : AppCompatActivity() {
                     val data = pharmaSnapshot.getValue().toString()
                     pharmacyNumbers.add(data)
                 }
+                loadingDialog.dismissWithAnimation()
                 loadPharmacyDetails(pharmacyNumbers)
-                progressDialog.dismiss()
             }
 
             override fun onCancelled(error: DatabaseError) {
                 makeToast("Unable to find Pharmacy")
-                progressDialog.dismiss()
+                loadingDialog.dismissWithAnimation()
             }
         })
     }
     private fun loadPharmacyDetails(pharmacyNumbers:ArrayList<String>){
-        progressDialog.setMessage("Pharmacy Details Loading...")
-        progressDialog.show()
+        showLoadingMessage("Loading Pharmacy Details...")
         val end = pharmacyNumbers.size-1
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Pharmacy")
@@ -180,14 +182,14 @@ class ScanDetails : AppCompatActivity() {
                         }
                     }
                     scanDetailsRecycle.adapter?.notifyDataSetChanged()
-                    progressDialog.dismiss()
+                    loadingDialog.dismissWithAnimation()
                 }else{
-                    progressDialog.dismiss()
+                    loadingDialog.dismissWithAnimation()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                progressDialog.dismiss()
+                loadingDialog.dismissWithAnimation()
                 makeToast("Data is not available go back and try again")
             }
         })
@@ -197,7 +199,7 @@ class ScanDetails : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PharmacyViewHolder {
             val itemView = LayoutInflater.from(parent.context).inflate(R.layout.available_pharmacy_recycler_item,
-            parent,false)
+                parent,false)
 
             return PharmacyViewHolder(itemView)
         }
@@ -214,7 +216,11 @@ class ScanDetails : AppCompatActivity() {
                 .into(holder.imgPharmacy)
             holder.avb_pharmacy_recycle_item.setOnClickListener {
                 val selectedItem = pharmacyList[position]
-                Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
+                //Toast.makeText(applicationContext,selectedItem.Name.toString(),Toast.LENGTH_SHORT).show()
+                showSuccessMessage("${selectedItem.Name} \nContact No:${selectedItem.telephone}")
+                successDialog.setConfirmButton("OK",SweetAlertDialog.OnSweetClickListener {
+                    successDialog.dismissWithAnimation()
+                })
             }
         }
 
@@ -234,5 +240,20 @@ class ScanDetails : AppCompatActivity() {
 
     private fun makeToast(value:String){
         Toast.makeText(this,value,Toast.LENGTH_SHORT).show()
+    }
+    private fun showSuccessMessage(message:String){
+        successDialog = SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+        successDialog.setCancelable(true)
+        successDialog.setCustomImage(R.drawable.call_icon)
+        successDialog.setTitleText("Contact...!")
+        successDialog.setContentText(message)
+        successDialog.show()
+    }
+    private fun showLoadingMessage(message:String){
+        loadingDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            .setTitleText("Please Wait...")
+            .setContentText(message)
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
     }
 }

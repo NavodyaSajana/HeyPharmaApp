@@ -2,6 +2,7 @@ package com.saclim.heypharmaapp
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
@@ -27,7 +29,9 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.saclim.heypharmaapp.ScanDetailsMedication
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_scan_details.*
 import kotlinx.android.synthetic.main.activity_scan_here.*
 import kotlinx.android.synthetic.main.activity_scan_here.bottomNavigationView
 import java.lang.System.lineSeparator
@@ -38,6 +42,8 @@ class ScanHere : AppCompatActivity() {
     private lateinit var cameraCaptureImage:ImageView
     private lateinit var fab:FloatingActionButton
     private lateinit var textMedicationName: TextInputEditText
+    private lateinit var errorDialog: SweetAlertDialog
+    private lateinit var loadingDialog: SweetAlertDialog
 
 
     private companion object{
@@ -116,58 +122,62 @@ class ScanHere : AppCompatActivity() {
 
         }
 
-        fab.setOnClickListener{
-            progressDialog.setMessage("Searching The Drug...")
-            progressDialog.show()
+        fab.setOnClickListener {
+
             val medicationItem = textMedicationName.text.toString().toUpperCase()
 
-            if(!medicationItem.isNullOrEmpty()){
+            if (!medicationItem.isNullOrEmpty()) {
+                showLoadingMessage("Searching the Drug...")
                 firebaseDatabase = FirebaseDatabase.getInstance()
                 databaseReference = firebaseDatabase.getReference("Drug")
 
-                databaseReference.child(medicationItem).get().addOnSuccessListener { result->
-                    progressDialog.dismiss()
-                    if(result.value!=null){
-                        val intent= Intent(this, ScanDetails::class.java)
-                        intent.putExtra("medicationName",medicationItem)
+                databaseReference.child(medicationItem).get().addOnSuccessListener { result ->
+                    loadingDialog.dismissWithAnimation()
+                    if (result.value != null) {
+                        val intent = Intent(this, ScanDetailsMedication::class.java)
+                        intent.putExtra("medicationName", medicationItem)
                         finish()
                         startActivity(intent)
-                    }else{
+                    } else {
+                        loadingDialog.dismissWithAnimation()
                         showToast("Sorry This Drug is Not Available")
                     }
                 }.addOnFailureListener {
-                    progressDialog.dismiss()
-                    showToast(it.toString())
+                    loadingDialog.dismissWithAnimation()
+                    showErrorMessage(it.message.toString())
                 }
+            }else{
+                showErrorMessage("Please Enter the Medication Name...")
             }
         }
 
     }
 
     private fun recognizeTextFromImage(){
-        progressDialog.setMessage("Preparing Image...")
-        progressDialog.show()
+        showLoadingMessage("Preparing Image Please Wait...")
 
         try{
+            loadingDialog.dismissWithAnimation()
             val inputImage = InputImage.fromFilePath(this,imageUri!!)
-            progressDialog.setMessage("Recognizing Text...")
+            showLoadingMessage("Recognizing the text on the image")
 
             val textTaskResult = textRecognizer.process(inputImage)
                 .addOnSuccessListener { text->
-                    progressDialog.dismiss()
+                    loadingDialog.dismissWithAnimation()
 
                     val recognizedText = text.text
                     textMedicationName.setText(recognizedText.toString())
-                    Toast.makeText(this,textMedicationName.text.toString(),Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,textMedicationName.text.toString(),Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener{ e->
-                    progressDialog.dismiss()
-                    showToast("Failed to recognize image due to ${e.message}")
+                    loadingDialog.dismissWithAnimation()
+                    showErrorMessage("Failed to recognize image due to ${e.message}")
                 }
         }
         catch (e: Exception){
-            progressDialog.dismiss()
-            showToast("Failed to prepare image due to ${e.message}")
+            loadingDialog.dismissWithAnimation()
+            loadingDialog.dismissWithAnimation()
+            showErrorMessage("Failed to prepare image due to ${e.message}")
         }
     }
     private fun showInputImageDialog(){
@@ -312,4 +322,33 @@ class ScanHere : AppCompatActivity() {
     private fun showToast(message:String){
         Toast.makeText(this,message,Toast.LENGTH_LONG).show()
     }
+    private fun showLoadingMessage(message:String){
+        loadingDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            .setTitleText("Please Wait...")
+            .setContentText(message)
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
+    }
+    private fun showErrorMessage(errorText:String){
+        errorDialog = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+        errorDialog.setCancelable(true)
+        errorDialog.setTitleText("Error...!")
+        errorDialog.setContentText(errorText)
+        errorDialog.show()
+    }
+    /*private fun showConfirmMessage(message:String){
+        confirmDialog = SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+        confirmDialog.setCancelable(true)
+        confirmDialog.setCustomImage(R.drawable.question_mark)
+        confirmDialog.setTitleText("Confirm...!")
+        confirmDialog.setContentText(message)
+        confirmDialog.show()
+    }
+    private fun showSuccessMessage(message:String){
+        successDialog = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        successDialog.setCancelable(true)
+        successDialog.setTitleText("Done...!")
+        successDialog.setContentText(message)
+        successDialog.show()
+    }*/
 }

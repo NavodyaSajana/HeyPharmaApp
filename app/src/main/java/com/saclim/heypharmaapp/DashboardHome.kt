@@ -89,7 +89,7 @@ class DashboardHome : AppCompatActivity() {
         }
 
         pharmacy.setOnClickListener{
-            val intent= Intent(this, Pharmacy::class.java)
+            val intent= Intent(this, ShowPharmacy::class.java)
             finish()
             startActivity(intent)
         }

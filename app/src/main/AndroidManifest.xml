@@ -38,7 +38,28 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".ScanDetailsMedication"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ShowPharmacy"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".BuyNow"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ScanHere"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

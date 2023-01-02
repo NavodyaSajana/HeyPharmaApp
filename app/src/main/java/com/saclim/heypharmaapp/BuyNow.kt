@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -33,6 +33,7 @@ class BuyNow : AppCompatActivity() {
     private lateinit var txtCharges: TextView
     private lateinit var txtNet: TextView
     private lateinit var btnBuyNow: MaterialButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +81,7 @@ class BuyNow : AppCompatActivity() {
         txtNet = findViewById(R.id.txtNet)
         btnBuyNow = findViewById(R.id.btnBuyNow)
 
+
         val extra = intent.extras
         if(extra!=null){
             prescriptionID=extra.getString("prescriptionID").toString()
@@ -95,7 +97,7 @@ class BuyNow : AppCompatActivity() {
             confirmDialog.setConfirmButton("Ok",SweetAlertDialog.OnSweetClickListener {
                 confirmDialog.dismissWithAnimation()
                 val dataToSend = arrayOf<String>(presID,netTotal.toString())
-                val intent = Intent(this,PaymentDetails::class.java)
+                val intent = Intent(this,ShippingDetails::class.java)
                 intent.putExtra("data",dataToSend)
                 finish()
                 startActivity(intent)
@@ -107,37 +109,45 @@ class BuyNow : AppCompatActivity() {
     }
 
     private fun loadPrescriptionDetails(){
+        showLoadingMessage("Loading Prescription Details...")
         databaseReference = FirebaseDatabase.getInstance().getReference("Prescription").child(prescriptionID)
         databaseReference.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val prescription = snapshot.getValue<Presciption>()
                 if(prescription!=null){
+                    loadingDialog.dismissWithAnimation()
                     pharmacyID=prescription.Phar_Id.toString()
                     total=prescription.Pres_price!!.toDouble()
                     presID = prescription.Prescription_id.toString()
                     loadPharmacyDetails()
                     calculateBillPrice()
+                }else{
+                    loadingDialog.dismissWithAnimation()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                loadingDialog.dismissWithAnimation()
             }
         })
     }
     private fun loadPharmacyDetails(){
+        showLoadingMessage("Loading Pharmacy Details")
         databaseReference = FirebaseDatabase.getInstance().getReference("Pharmacy").child(pharmacyID)
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val pharmacy = snapshot.getValue<Pharmacy>()
                 if (pharmacy != null) {
+                    loadingDialog.dismissWithAnimation()
                     txtPharmacyName.setText(pharmacy.Name)
                     txtPharmacyTp.setText(pharmacy.telephone)
+                }else{
+                    loadingDialog.dismissWithAnimation()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
-
+                loadingDialog.dismissWithAnimation()
             }
         })
     }
