@@ -99,7 +99,7 @@
             android:layout_height="200dp">
 
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
                 android:id="@+id/textSearchPharmacy"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -116,11 +116,11 @@
                 app:startIconDrawable="@drawable/ic_baseline_search_24"
                 tools:ignore="MissingConstraints">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <!--<com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/loginUsername"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content" />-->
+            </EditText>
 
 
 
